@@ -3,10 +3,12 @@ import { Base } from './base.entity';
 import { Content } from './content.entity';
 import { Tag } from './tag.entity';
 import { User } from './user.entity';
+import { ExistsIn } from '../validators/exists-in';
 
 @Entity('articles')
 export class Article extends Base {
   @Column()
+  @ExistsIn('User')
   user_id: number;
 
   @Column()
