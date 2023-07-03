@@ -18,7 +18,7 @@ export class Article extends Base {
   description: string;
 
   @Column()
-  status: 'published' | 'draft';
+  status: string;
 
   @ManyToOne(() => User, user => user.articles)
   @JoinColumn({
