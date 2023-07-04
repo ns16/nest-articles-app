@@ -6,6 +6,7 @@ import { UsersModule } from './users/users.module';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { ArticlesModule } from './articles/articles.module';
+import { ArticlesTagsModule } from './articles-tags/articles-tags.module';
 import { ContentsModule } from './contents/contents.module';
 import { TagsModule } from './tags/tags.module';
 import { AdminsModule } from './admins/admins.module';
@@ -14,6 +15,7 @@ import { AdminsModule } from './admins/admins.module';
   imports: [
     AdminsModule,
     ArticlesModule,
+    ArticlesTagsModule,
     ConfigModule.forRoot({
       load: [config]
     }),
