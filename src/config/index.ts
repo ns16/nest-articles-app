@@ -15,5 +15,6 @@ export const config = () => ({
     entities: ['dist/**/**.entity.js'],
     subscribers: ['dist/**/**.subscriber.js'],
     migrations: ['dist/migrations/**/*.js']
-  }
+  },
+  jwtKey: process.env.JWT_KEY
 });

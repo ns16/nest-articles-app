@@ -14,7 +14,7 @@ export class ArticlesTagsController {
   }
 
   @Delete()
-  async remote(@Body() body: CreateOrRemoveBodyDto): Promise<Article> {
+  async remove(@Body() body: CreateOrRemoveBodyDto): Promise<Article> {
     return this.service.remove(body);
   }
 }
