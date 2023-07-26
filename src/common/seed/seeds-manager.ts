@@ -12,9 +12,10 @@ export default class SeedsManager {
   ];
 
   static async getSeedsData() {
+    const environment = process.env.NODE_ENV ?? 'development';
     for (const seed of SeedsManager.seeds) {
       try {
-        const module = await import(process.cwd() + '/src/seeds/' + seed.entity.replace('_', '-') + '.seed');
+        const module = await import(process.cwd() + '/src/seeds/' + environment + '/' + seed.entity.replace('_', '-') + '.seed');
         seed.data.push(...module.default);
       } catch (error) {
         // Ignore cases when the file is not found
