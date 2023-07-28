@@ -1,4 +1,5 @@
 import { Controller, Get } from '@nestjs/common';
+import { ApiExcludeEndpoint } from '@nestjs/swagger';
 import { Public } from './common/decorators';
 import { AppService } from './app.service';
 
@@ -6,6 +7,7 @@ import { AppService } from './app.service';
 export class AppController {
   constructor(private readonly appService: AppService) {}
 
+  @ApiExcludeEndpoint()
   @Public()
   @Get()
   getHello(): string {

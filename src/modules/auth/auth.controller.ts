@@ -1,14 +1,19 @@
 import { Body, Controller, Get, HttpCode, HttpStatus, Post, Res } from '@nestjs/common';
+import { ApiBadRequestResponse, ApiBearerAuth, ApiOperation, ApiTags, ApiUnauthorizedResponse } from '@nestjs/swagger';
 import { Response } from 'express';
 import { Public, User } from '../../common/decorators';
 import { Admin } from '../../entities/admin.entity';
 import { LoginAdminDto } from './dto/login-admin.dto';
 import { AuthService } from './auth.service';
 
+@ApiTags('Auth')
 @Controller('auth')
 export class AuthController {
   constructor(private service: AuthService) {}
 
+  @ApiOperation({ summary: 'Login' })
+  @ApiBadRequestResponse({ description: 'Bad Request' })
+  @ApiUnauthorizedResponse({ description: 'Invalid username or password' })
   @Public()
   @Post('login')
   @HttpCode(HttpStatus.OK)
@@ -18,6 +23,9 @@ export class AuthController {
     return model;
   }
 
+  @ApiBearerAuth()
+  @ApiOperation({ summary: 'Get authorized admin' })
+  @ApiUnauthorizedResponse({ description: 'Unauthorized' })
   @Get('me')
   async me(@User() user: Admin): Promise<Admin> {
     return user;

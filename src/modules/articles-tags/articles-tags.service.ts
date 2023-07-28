@@ -2,7 +2,7 @@ import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Article } from '../../entities/article.entity';
 import { Tag } from '../../entities/tag.entity';
-import { CreateOrRemoveBodyDto } from './dto/create-or-remove-body.dto';
+import { CreateOrRemoveArticleTagDto } from './dto/create-or-remove-article-tag.dto';
 import { CreateOrRemoveResponse } from './interfaces/create-or-remove-response';
 
 @Injectable()
@@ -12,19 +12,19 @@ export class ArticlesTagsService {
     @InjectRepository(Tag) private tagRepository
   ) {}
 
-  async create(data: CreateOrRemoveBodyDto): Promise<Article> {
+  async create(data: CreateOrRemoveArticleTagDto): Promise<Article> {
     const { articleModel, tagModel } = await this.findArticleAndTag(data);
     if (!articleModel.tags.some((tag: Tag) => tag.id === tagModel.id)) articleModel.tags.push(tagModel);
     return await this.articleRepository.save(articleModel);
   }
 
-  async remove(data: CreateOrRemoveBodyDto): Promise<Article> {
+  async remove(data: CreateOrRemoveArticleTagDto): Promise<Article> {
     const { articleModel, tagModel } = await this.findArticleAndTag(data);
     articleModel.tags = articleModel.tags.filter((tag: Tag) => tag.id !== tagModel.id);
     return await this.articleRepository.save(articleModel);
   }
 
-  private async findArticleAndTag(data: CreateOrRemoveBodyDto): Promise<CreateOrRemoveResponse> {
+  private async findArticleAndTag(data: CreateOrRemoveArticleTagDto): Promise<CreateOrRemoveResponse> {
     const articleModel: Article = await this.articleRepository.findOne({
       where: { id: data.article_id },
       relations: ['tags']

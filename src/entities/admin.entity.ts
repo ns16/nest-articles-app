@@ -1,3 +1,4 @@
+import { ApiProperty } from '@nestjs/swagger';
 import { Exclude } from 'class-transformer';
 import { Column, Entity } from 'typeorm';
 import { Base } from './base.entity';
@@ -5,9 +6,17 @@ import { IsUnique } from '../validators/is-unique';
 
 @Entity('admins')
 export class Admin extends Base {
+  @ApiProperty({
+    type: 'string',
+    maxLength: 100
+  })
   @Column()
   name: string;
 
+  @ApiProperty({
+    type: 'string',
+    maxLength: 100
+  })
   @Column()
   @IsUnique('Admin')
   username: string;
@@ -19,6 +28,11 @@ export class Admin extends Base {
   @Exclude()
   tmpPassword: string;
 
+  @ApiProperty({
+    type: 'string',
+    maxLength: 100,
+    format: 'email'
+  })
   @Column()
   @IsUnique('Admin')
   email: string;

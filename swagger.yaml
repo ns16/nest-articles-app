@@ -1,0 +1,1560 @@
+openapi: 3.0.0
+paths:
+  /api/v1/admins:
+    get:
+      operationId: AdminsController_find
+      summary: Get admins paginated list
+      parameters:
+        - name: filters
+          required: false
+          in: query
+          examples:
+            Example 1:
+              value: {}
+            Example 2:
+              value:
+                filters[id][$eq]: 1
+          schema:
+            type: object
+        - name: page
+          required: false
+          in: query
+          schema:
+            minimum: 1
+            type: integer
+        - name: pageSize
+          required: false
+          in: query
+          schema:
+            minimum: 1
+            type: integer
+        - name: sorts
+          required: false
+          in: query
+          examples:
+            Example 1:
+              value: {}
+            Example 2:
+              value:
+                sorts[id]: asc
+          schema:
+            type: object
+        - name: includes[]
+          required: false
+          in: query
+          schema:
+            type: array
+            items:
+              type: number
+              enum: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Admin'
+                  pagination:
+                    $ref: '#/components/schemas/Pagination'
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+      tags: &ref_0
+        - Admins
+      security:
+        - bearer: []
+    post:
+      operationId: AdminsController_create
+      summary: Create new admin
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateAdminDto'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Admin'
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+      tags: *ref_0
+      security:
+        - bearer: []
+  /api/v1/admins/all:
+    get:
+      operationId: AdminsController_findAll
+      summary: Get all admins
+      parameters:
+        - name: filters
+          required: false
+          in: query
+          examples:
+            Example 1:
+              value: {}
+            Example 2:
+              value:
+                filters[id][$eq]: 1
+          schema:
+            type: object
+        - name: sorts
+          required: false
+          in: query
+          examples:
+            Example 1:
+              value: {}
+            Example 2:
+              value:
+                sorts[id]: asc
+          schema:
+            type: object
+        - name: includes[]
+          required: false
+          in: query
+          schema:
+            type: array
+            items:
+              type: number
+              enum: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Admin'
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+      tags: *ref_0
+      security:
+        - bearer: []
+  /api/v1/admins/{id}:
+    get:
+      operationId: AdminsController_findOne
+      summary: Get specific admin
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: number
+        - name: includes[]
+          required: false
+          in: query
+          schema:
+            type: array
+            items:
+              type: number
+              enum: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Admin'
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '404':
+          description: Not Found
+      tags: *ref_0
+      security:
+        - bearer: []
+    put:
+      operationId: AdminsController_update
+      summary: Update specific admin
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: number
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateAdminDto'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Admin'
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '404':
+          description: Not Found
+      tags: *ref_0
+      security:
+        - bearer: []
+    delete:
+      operationId: AdminsController_remove
+      summary: Delete specific admin
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: number
+      responses:
+        '204':
+          description: No content
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '404':
+          description: Not Found
+      tags: *ref_0
+      security:
+        - bearer: []
+  /api/v1/articles:
+    get:
+      operationId: ArticlesController_find
+      summary: Get articles paginated list
+      parameters:
+        - name: filters
+          required: false
+          in: query
+          examples:
+            Example 1:
+              value: {}
+            Example 2:
+              value:
+                filters[id][$eq]: 1
+          schema:
+            type: object
+        - name: page
+          required: false
+          in: query
+          schema:
+            minimum: 1
+            type: integer
+        - name: pageSize
+          required: false
+          in: query
+          schema:
+            minimum: 1
+            type: integer
+        - name: sorts
+          required: false
+          in: query
+          examples:
+            Example 1:
+              value: {}
+            Example 2:
+              value:
+                sorts[id]: asc
+          schema:
+            type: object
+        - name: includes[]
+          required: false
+          in: query
+          schema:
+            type: array
+            items:
+              type: string
+              enum:
+                - user
+                - content
+                - tags
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Article'
+                  pagination:
+                    $ref: '#/components/schemas/Pagination'
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+      tags: &ref_1
+        - Articles
+      security:
+        - bearer: []
+    post:
+      operationId: ArticlesController_create
+      summary: Create new article
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateOrUpdateArticleDto'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Article'
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+      tags: *ref_1
+      security:
+        - bearer: []
+  /api/v1/articles/all:
+    get:
+      operationId: ArticlesController_findAll
+      summary: Get all articles
+      parameters:
+        - name: filters
+          required: false
+          in: query
+          examples:
+            Example 1:
+              value: {}
+            Example 2:
+              value:
+                filters[id][$eq]: 1
+          schema:
+            type: object
+        - name: sorts
+          required: false
+          in: query
+          examples:
+            Example 1:
+              value: {}
+            Example 2:
+              value:
+                sorts[id]: asc
+          schema:
+            type: object
+        - name: includes[]
+          required: false
+          in: query
+          schema:
+            type: array
+            items:
+              type: string
+              enum:
+                - user
+                - content
+                - tags
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Article'
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+      tags: *ref_1
+      security:
+        - bearer: []
+  /api/v1/articles/{id}:
+    get:
+      operationId: ArticlesController_findOne
+      summary: Get specific article
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: number
+        - name: includes[]
+          required: false
+          in: query
+          schema:
+            type: array
+            items:
+              type: string
+              enum:
+                - user
+                - content
+                - tags
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Article'
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '404':
+          description: Not Found
+      tags: *ref_1
+      security:
+        - bearer: []
+    put:
+      operationId: ArticlesController_update
+      summary: Update specific article
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: number
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateOrUpdateArticleDto'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Article'
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '404':
+          description: Not Found
+      tags: *ref_1
+      security:
+        - bearer: []
+    delete:
+      operationId: ArticlesController_remove
+      summary: Delete specific article
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: number
+      responses:
+        '204':
+          description: No content
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '404':
+          description: Not Found
+      tags: *ref_1
+      security:
+        - bearer: []
+  /api/v1/articles-tags:
+    post:
+      operationId: ArticlesTagsController_create
+      summary: Create article-tag relation
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateOrRemoveArticleTagDto'
+      responses:
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+      tags: &ref_2
+        - Articles-Tags
+      security:
+        - bearer: []
+    delete:
+      operationId: ArticlesTagsController_remove
+      summary: Delete article-tag relation
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateOrRemoveArticleTagDto'
+      responses:
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+      tags: *ref_2
+      security:
+        - bearer: []
+  /api/v1/auth/login:
+    post:
+      operationId: AuthController_login
+      summary: Login
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginAdminDto'
+      responses:
+        '400':
+          description: Bad Request
+        '401':
+          description: Invalid username or password
+      tags: &ref_3
+        - Auth
+  /api/v1/auth/me:
+    get:
+      operationId: AuthController_me
+      summary: Get authorized admin
+      parameters: []
+      responses:
+        '401':
+          description: Unauthorized
+      tags: *ref_3
+      security:
+        - bearer: []
+  /api/v1/contents:
+    get:
+      operationId: ContentsController_find
+      summary: Get contents paginated list
+      parameters:
+        - name: filters
+          required: false
+          in: query
+          examples:
+            Example 1:
+              value: {}
+            Example 2:
+              value:
+                filters[id][$eq]: 1
+          schema:
+            type: object
+        - name: page
+          required: false
+          in: query
+          schema:
+            minimum: 1
+            type: integer
+        - name: pageSize
+          required: false
+          in: query
+          schema:
+            minimum: 1
+            type: integer
+        - name: sorts
+          required: false
+          in: query
+          examples:
+            Example 1:
+              value: {}
+            Example 2:
+              value:
+                sorts[id]: asc
+          schema:
+            type: object
+        - name: includes[]
+          required: false
+          in: query
+          schema:
+            type: array
+            items:
+              type: string
+              enum:
+                - article
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Content'
+                  pagination:
+                    $ref: '#/components/schemas/Pagination'
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+      tags: &ref_4
+        - Contents
+      security:
+        - bearer: []
+    post:
+      operationId: ContentsController_create
+      summary: Create new content
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateOrUpdateContentDto'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Content'
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+      tags: *ref_4
+      security:
+        - bearer: []
+  /api/v1/contents/all:
+    get:
+      operationId: ContentsController_findAll
+      summary: Get all contents
+      parameters:
+        - name: filters
+          required: false
+          in: query
+          examples:
+            Example 1:
+              value: {}
+            Example 2:
+              value:
+                filters[id][$eq]: 1
+          schema:
+            type: object
+        - name: sorts
+          required: false
+          in: query
+          examples:
+            Example 1:
+              value: {}
+            Example 2:
+              value:
+                sorts[id]: asc
+          schema:
+            type: object
+        - name: includes[]
+          required: false
+          in: query
+          schema:
+            type: array
+            items:
+              type: string
+              enum:
+                - article
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Content'
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+      tags: *ref_4
+      security:
+        - bearer: []
+  /api/v1/contents/{id}:
+    get:
+      operationId: ContentsController_findOne
+      summary: Get specific content
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: number
+        - name: includes[]
+          required: false
+          in: query
+          schema:
+            type: array
+            items:
+              type: string
+              enum:
+                - article
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Content'
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '404':
+          description: Not Found
+      tags: *ref_4
+      security:
+        - bearer: []
+    put:
+      operationId: ContentsController_update
+      summary: Update specific content
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: number
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateOrUpdateContentDto'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Content'
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '404':
+          description: Not Found
+      tags: *ref_4
+      security:
+        - bearer: []
+    delete:
+      operationId: ContentsController_remove
+      summary: Delete specific content
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: number
+      responses:
+        '204':
+          description: No content
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '404':
+          description: Not Found
+      tags: *ref_4
+      security:
+        - bearer: []
+  /api/v1/tags:
+    get:
+      operationId: TagsController_find
+      summary: Get tags paginated list
+      parameters:
+        - name: filters
+          required: false
+          in: query
+          examples:
+            Example 1:
+              value: {}
+            Example 2:
+              value:
+                filters[id][$eq]: 1
+          schema:
+            type: object
+        - name: page
+          required: false
+          in: query
+          schema:
+            minimum: 1
+            type: integer
+        - name: pageSize
+          required: false
+          in: query
+          schema:
+            minimum: 1
+            type: integer
+        - name: sorts
+          required: false
+          in: query
+          examples:
+            Example 1:
+              value: {}
+            Example 2:
+              value:
+                sorts[id]: asc
+          schema:
+            type: object
+        - name: includes[]
+          required: false
+          in: query
+          schema:
+            type: array
+            items:
+              type: string
+              enum:
+                - articles
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Tag'
+                  pagination:
+                    $ref: '#/components/schemas/Pagination'
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+      tags: &ref_5
+        - Tags
+      security:
+        - bearer: []
+    post:
+      operationId: TagsController_create
+      summary: Create new tag
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateOrUpdateTagDto'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Tag'
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+      tags: *ref_5
+      security:
+        - bearer: []
+  /api/v1/tags/all:
+    get:
+      operationId: TagsController_findAll
+      summary: Get all tags
+      parameters:
+        - name: filters
+          required: false
+          in: query
+          examples:
+            Example 1:
+              value: {}
+            Example 2:
+              value:
+                filters[id][$eq]: 1
+          schema:
+            type: object
+        - name: sorts
+          required: false
+          in: query
+          examples:
+            Example 1:
+              value: {}
+            Example 2:
+              value:
+                sorts[id]: asc
+          schema:
+            type: object
+        - name: includes[]
+          required: false
+          in: query
+          schema:
+            type: array
+            items:
+              type: string
+              enum:
+                - articles
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Tag'
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+      tags: *ref_5
+      security:
+        - bearer: []
+  /api/v1/tags/{id}:
+    get:
+      operationId: TagsController_findOne
+      summary: Get specific tag
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: number
+        - name: includes[]
+          required: false
+          in: query
+          schema:
+            type: array
+            items:
+              type: string
+              enum:
+                - articles
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Tag'
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '404':
+          description: Not Found
+      tags: *ref_5
+      security:
+        - bearer: []
+    put:
+      operationId: TagsController_update
+      summary: Update specific tag
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: number
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateOrUpdateTagDto'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Tag'
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '404':
+          description: Not Found
+      tags: *ref_5
+      security:
+        - bearer: []
+    delete:
+      operationId: TagsController_remove
+      summary: Delete specific tag
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: number
+      responses:
+        '204':
+          description: No content
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '404':
+          description: Not Found
+      tags: *ref_5
+      security:
+        - bearer: []
+  /api/v1/users:
+    get:
+      operationId: UsersController_find
+      summary: Get users paginated list
+      parameters:
+        - name: filters
+          required: false
+          in: query
+          examples:
+            Example 1:
+              value: {}
+            Example 2:
+              value:
+                filters[id][$eq]: 1
+          schema:
+            type: object
+        - name: page
+          required: false
+          in: query
+          schema:
+            minimum: 1
+            type: integer
+        - name: pageSize
+          required: false
+          in: query
+          schema:
+            minimum: 1
+            type: integer
+        - name: sorts
+          required: false
+          in: query
+          examples:
+            Example 1:
+              value: {}
+            Example 2:
+              value:
+                sorts[id]: asc
+          schema:
+            type: object
+        - name: includes[]
+          required: false
+          in: query
+          schema:
+            type: array
+            items:
+              type: string
+              enum:
+                - articles
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/User'
+                  pagination:
+                    $ref: '#/components/schemas/Pagination'
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+      tags: &ref_6
+        - Users
+      security:
+        - bearer: []
+    post:
+      operationId: UsersController_create
+      summary: Create new user
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateUserDto'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+      tags: *ref_6
+      security:
+        - bearer: []
+  /api/v1/users/all:
+    get:
+      operationId: UsersController_findAll
+      summary: Get all users
+      parameters:
+        - name: filters
+          required: false
+          in: query
+          examples:
+            Example 1:
+              value: {}
+            Example 2:
+              value:
+                filters[id][$eq]: 1
+          schema:
+            type: object
+        - name: sorts
+          required: false
+          in: query
+          examples:
+            Example 1:
+              value: {}
+            Example 2:
+              value:
+                sorts[id]: asc
+          schema:
+            type: object
+        - name: includes[]
+          required: false
+          in: query
+          schema:
+            type: array
+            items:
+              type: string
+              enum:
+                - articles
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/User'
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+      tags: *ref_6
+      security:
+        - bearer: []
+  /api/v1/users/{id}:
+    get:
+      operationId: UsersController_findOne
+      summary: Get specific user
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: number
+        - name: includes[]
+          required: false
+          in: query
+          schema:
+            type: array
+            items:
+              type: string
+              enum:
+                - articles
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '404':
+          description: Not Found
+      tags: *ref_6
+      security:
+        - bearer: []
+    put:
+      operationId: UsersController_update
+      summary: Update specific user
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: number
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateUserDto'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '404':
+          description: Not Found
+      tags: *ref_6
+      security:
+        - bearer: []
+    delete:
+      operationId: UsersController_remove
+      summary: Delete specific user
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: number
+      responses:
+        '204':
+          description: No content
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '404':
+          description: Not Found
+      tags: *ref_6
+      security:
+        - bearer: []
+info:
+  title: Nest Articles App
+  description: RESTful API with NestJS and TypeORM
+  version: '1.0'
+  contact: {}
+tags: []
+servers:
+  - url: http://localhost:3333
+    description: Dev Server
+components:
+  securitySchemes:
+    bearer:
+      scheme: bearer
+      bearerFormat: JWT
+      type: http
+  schemas:
+    Admin:
+      type: object
+      properties:
+        id:
+          type: integer
+          minimum: 1
+        created_at:
+          format: date-time
+          type: string
+        updated_at:
+          format: date-time
+          type: string
+        name:
+          type: string
+          maxLength: 100
+        username:
+          type: string
+          maxLength: 100
+        email:
+          type: string
+          maxLength: 100
+          format: email
+      required:
+        - id
+        - created_at
+        - updated_at
+        - name
+        - username
+        - email
+    Pagination:
+      type: object
+      properties:
+        page:
+          type: integer
+          minimum: 1
+        pageSize:
+          type: integer
+          minimum: 1
+        rowCount:
+          type: integer
+          minimum: 0
+        pageCount:
+          type: integer
+          minimum: 0
+      required:
+        - page
+        - pageSize
+        - rowCount
+        - pageCount
+    CreateAdminDto:
+      type: object
+      properties:
+        name:
+          type: string
+          maxLength: 100
+        username:
+          type: string
+          maxLength: 100
+        password:
+          type: string
+          minLength: 6
+          maxLength: 50
+        email:
+          type: string
+          maxLength: 100
+          format: email
+      required:
+        - name
+        - username
+        - password
+        - email
+    UpdateAdminDto:
+      type: object
+      properties:
+        name:
+          type: string
+          maxLength: 100
+        username:
+          type: string
+          maxLength: 100
+        password:
+          type: string
+          minLength: 6
+          maxLength: 50
+        email:
+          type: string
+          maxLength: 100
+          format: email
+      required:
+        - name
+        - username
+        - email
+    Article:
+      type: object
+      properties:
+        id:
+          type: integer
+          minimum: 1
+        created_at:
+          format: date-time
+          type: string
+        updated_at:
+          format: date-time
+          type: string
+        user_id:
+          type: integer
+          minimum: 1
+        title:
+          type: string
+          maxLength: 100
+        description:
+          type: string
+          maxLength: 500
+        status:
+          type: string
+          enum:
+            - published
+            - draft
+      required:
+        - id
+        - created_at
+        - updated_at
+        - user_id
+        - title
+        - description
+        - status
+    CreateOrUpdateArticleDto:
+      type: object
+      properties:
+        user_id:
+          type: integer
+          minimum: 1
+        title:
+          type: string
+          maxLength: 100
+        description:
+          type: string
+          maxLength: 500
+        status:
+          type: string
+          enum:
+            - published
+            - draft
+      required:
+        - user_id
+        - title
+        - description
+        - status
+    CreateOrRemoveArticleTagDto:
+      type: object
+      properties:
+        article_id:
+          type: integer
+          minimum: 1
+        tag_id:
+          type: integer
+          minimum: 1
+      required:
+        - article_id
+        - tag_id
+    LoginAdminDto:
+      type: object
+      properties:
+        username:
+          type: string
+          maxLength: 100
+        password:
+          type: string
+          minLength: 6
+          maxLength: 50
+      required:
+        - username
+        - password
+    Content:
+      type: object
+      properties:
+        id:
+          type: integer
+          minimum: 1
+        created_at:
+          format: date-time
+          type: string
+        updated_at:
+          format: date-time
+          type: string
+        article_id:
+          type: integer
+          minimum: 1
+        body:
+          type: string
+      required:
+        - id
+        - created_at
+        - updated_at
+        - article_id
+        - body
+    CreateOrUpdateContentDto:
+      type: object
+      properties:
+        article_id:
+          type: integer
+          minimum: 1
+        body:
+          type: string
+      required:
+        - article_id
+        - body
+    Tag:
+      type: object
+      properties:
+        id:
+          type: integer
+          minimum: 1
+        created_at:
+          format: date-time
+          type: string
+        updated_at:
+          format: date-time
+          type: string
+        name:
+          type: string
+          maxLength: 100
+      required:
+        - id
+        - created_at
+        - updated_at
+        - name
+    CreateOrUpdateTagDto:
+      type: object
+      properties:
+        name:
+          type: string
+          maxLength: 100
+      required:
+        - name
+    User:
+      type: object
+      properties:
+        id:
+          type: integer
+          minimum: 1
+        created_at:
+          format: date-time
+          type: string
+        updated_at:
+          format: date-time
+          type: string
+        name:
+          type: string
+          maxLength: 100
+        username:
+          type: string
+          maxLength: 100
+        email:
+          type: string
+          maxLength: 100
+          format: email
+      required:
+        - id
+        - created_at
+        - updated_at
+        - name
+        - username
+        - email
+    CreateUserDto:
+      type: object
+      properties:
+        name:
+          type: string
+          maxLength: 100
+        username:
+          type: string
+          maxLength: 100
+        password:
+          type: string
+          minLength: 6
+          maxLength: 50
+        email:
+          type: string
+          maxLength: 100
+          format: email
+      required:
+        - name
+        - username
+        - password
+        - email
+    UpdateUserDto:
+      type: object
+      properties:
+        name:
+          type: string
+          maxLength: 100
+        username:
+          type: string
+          maxLength: 100
+        password:
+          type: string
+          minLength: 6
+          maxLength: 50
+        email:
+          type: string
+          maxLength: 100
+          format: email
+      required:
+        - name
+        - username
+        - email

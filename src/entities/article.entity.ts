@@ -1,3 +1,4 @@
+import { ApiProperty } from '@nestjs/swagger';
 import { Column, Entity, JoinColumn, JoinTable, ManyToMany, ManyToOne, OneToOne } from 'typeorm';
 import { Base } from './base.entity';
 import { Content } from './content.entity';
@@ -7,16 +8,32 @@ import { ExistsIn } from '../validators/exists-in';
 
 @Entity('articles')
 export class Article extends Base {
+  @ApiProperty({
+    type: 'integer',
+    minimum: 1
+  })
   @Column()
   @ExistsIn('User')
   user_id: number;
 
+  @ApiProperty({
+    type: 'string',
+    maxLength: 100
+  })
   @Column()
   title: string;
 
+  @ApiProperty({
+    type: 'string',
+    maxLength: 500
+  })
   @Column()
   description: string;
 
+  @ApiProperty({
+    type: 'string',
+    enum: ['published', 'draft']
+  })
   @Column()
   status: string;
 

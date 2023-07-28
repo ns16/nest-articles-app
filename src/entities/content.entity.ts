@@ -1,3 +1,4 @@
+import { ApiProperty } from '@nestjs/swagger';
 import { Column, Entity, JoinColumn, OneToOne } from 'typeorm';
 import { Article } from './article.entity';
 import { Base } from './base.entity';
@@ -6,11 +7,16 @@ import { IsUnique } from '../validators/is-unique';
 
 @Entity('contents')
 export class Content extends Base {
+  @ApiProperty({
+    type: 'integer',
+    minimum: 1
+  })
   @Column()
   @ExistsIn('Article')
   @IsUnique('Content')
   article_id: number;
 
+  @ApiProperty({ type: 'string' })
   @Column()
   body: string;
 
