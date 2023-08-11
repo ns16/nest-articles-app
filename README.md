@@ -1,73 +1,76 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="200" alt="Nest Logo" /></a>
-</p>
+# Example of RESTful API with NestJS and TypeORM
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+## Requirements
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+- Node.js >=16.6.0
+- NPM >=7.19.1
+- MySQL
 
-## Description
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+## Deployment
 
-## Installation
+1. Clone the application from the repository.
 
-```bash
-$ npm install
-```
+2. Install dependencies:
 
-## Running the app
+        npm ci
 
-```bash
-# development
-$ npm run start
+3. Create the .env file by copying the .env.example file:
 
-# watch mode
-$ npm run start:dev
+	    cp .env.example .env
 
-# production mode
-$ npm run start:prod
-```
+4. Specify the port, JWT key and database connection settings in the .env file.
 
-## Test
+5. Create database:
 
-```bash
-# unit tests
-$ npm run test
+		sudo mysql -uuser -ppass
+		> CREATE DATABASE `nest-articles-app` CHARACTER SET utf8 COLLATE utf8_general_ci;
+		> exit
 
-# e2e tests
-$ npm run test:e2e
+	Replace user and pass with your username and password, respectively.
 
-# test coverage
-$ npm run test:cov
-```
+6. Run migrations and seeds:
 
-## Support
+    	npm run migration:run
+    	npm run seed:run
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+The next steps will be different for development and production modes.
 
-## Stay in touch
+### Development mode
 
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+1. Launch the application:
 
-## License
+	    npm run start:dev
 
-Nest is [MIT licensed](LICENSE).
+### Production mode
+
+1. Create the application build:
+
+	    npm run build
+
+2. Launch the application:
+
+	    npm run start:prod
+
+
+## Testing
+
+### Unit testing
+
+1. Run tests:
+
+	    npm run test
+
+### End-to-end testing
+
+1. Create database:
+
+		sudo mysql -uuser -ppass
+		> CREATE DATABASE `nest-articles-app_test` CHARACTER SET utf8 COLLATE utf8_general_ci;
+		> exit
+
+	Replace user and pass with your username and password, respectively.
+
+2. Run tests:
+
+	    npm run test:e2e
