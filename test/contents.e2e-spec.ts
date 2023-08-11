@@ -1,8 +1,10 @@
 import { INestApplication } from '@nestjs/common';
 import { matchers } from 'jest-json-schema';
 import * as request from 'supertest';
+
 import MigrationsManager from '../src/common/migration/migrations-manager';
 import SeedsManager from '../src/common/seed/seeds-manager';
+
 import {
   contentSchema,
   contentsListSchema,
@@ -15,7 +17,6 @@ import TestAppManager from './_tools/test-app-manager';
 expect.extend(matchers);
 
 describe('ContentsController (e2e)', () => {
-
   let app: INestApplication;
   let authorization: string;
 
@@ -28,9 +29,7 @@ describe('ContentsController (e2e)', () => {
 
   describe('/api/contents (GET)', () => {
     test('{"query":{}} - 401 error, invalid token', async () => {
-      const res = await request(app.getHttpServer())
-        .get('/api/contents')
-        .query({});
+      const res = await request(app.getHttpServer()).get('/api/contents').query({});
       expect(res.status).toEqual(401);
       expect(res.body).toEqual({
         statusCode: 401,
@@ -47,18 +46,13 @@ describe('ContentsController (e2e)', () => {
       expect(res.status).toEqual(400);
       expect(res.body).toEqual({
         statusCode: 400,
-        message: [
-          'property foo should not exist'
-        ],
+        message: ['property foo should not exist'],
         error: 'Bad Request'
       });
     });
 
     test('{"query":{}} - success', async () => {
-      const res = await request(app.getHttpServer())
-        .get('/api/contents')
-        .query({})
-        .set('Authorization', authorization);
+      const res = await request(app.getHttpServer()).get('/api/contents').query({}).set('Authorization', authorization);
       expect(res.status).toEqual(200);
       expect(res.body.data).toMatchSchema(contentsListSchema);
       expect(res.body.data).toHaveLength(10);
@@ -203,9 +197,12 @@ describe('ContentsController (e2e)', () => {
         expect(res.status).toEqual(200);
         expect(res.body.data).toMatchSchema(contentsListSchema);
         expect(res.body.data).toHaveLength(10);
-        expect(res.body.data).toHaveProperty('[0].body', 'Ab eum hic occaecati nisi magnam. Iusto inventore vero ea laborum libero exercitationem nam. Repudiandae nobis quis aspernatur.\n' +
-          'Corporis libero autem odio in hic nostrum. Inventore molestias dicta molestias esse. Officiis optio inventore vero tempore error quasi aperiam earum tenetur.\n' +
-          'Quae temporibus totam et molestias quas incidunt. Harum incidunt quo veniam aliquam neque ab ab possimus expedita. Quaerat non quod tempore.');
+        expect(res.body.data).toHaveProperty(
+          '[0].body',
+          'Ab eum hic occaecati nisi magnam. Iusto inventore vero ea laborum libero exercitationem nam. Repudiandae nobis quis aspernatur.\n' +
+            'Corporis libero autem odio in hic nostrum. Inventore molestias dicta molestias esse. Officiis optio inventore vero tempore error quasi aperiam earum tenetur.\n' +
+            'Quae temporibus totam et molestias quas incidunt. Harum incidunt quo veniam aliquam neque ab ab possimus expedita. Quaerat non quod tempore.'
+        );
         expect(res.body.pagination).toMatchSchema(paginationSchema);
         expect(res.body.pagination).toMatchObject({
           page: 1,
@@ -223,9 +220,12 @@ describe('ContentsController (e2e)', () => {
         expect(res.status).toEqual(200);
         expect(res.body.data).toMatchSchema(contentsListSchema);
         expect(res.body.data).toHaveLength(10);
-        expect(res.body.data).toHaveProperty('[0].body', 'Voluptas exercitationem officia nisi. Quis quidem dicta molestias necessitatibus ullam soluta saepe voluptatibus. Quas similique qui.\n' +
-          'Occaecati ad ducimus quis non sapiente officia. Nisi iure eveniet fuga officiis earum praesentium. Reprehenderit ipsum eaque autem facere ex quaerat.\n' +
-          'Soluta soluta ullam sapiente corporis earum numquam corrupti voluptatum accusantium. Illum iure exercitationem optio deleniti perferendis ducimus perspiciatis repudiandae dicta. Cum repellendus laboriosam provident optio temporibus dignissimos voluptas.');
+        expect(res.body.data).toHaveProperty(
+          '[0].body',
+          'Voluptas exercitationem officia nisi. Quis quidem dicta molestias necessitatibus ullam soluta saepe voluptatibus. Quas similique qui.\n' +
+            'Occaecati ad ducimus quis non sapiente officia. Nisi iure eveniet fuga officiis earum praesentium. Reprehenderit ipsum eaque autem facere ex quaerat.\n' +
+            'Soluta soluta ullam sapiente corporis earum numquam corrupti voluptatum accusantium. Illum iure exercitationem optio deleniti perferendis ducimus perspiciatis repudiandae dicta. Cum repellendus laboriosam provident optio temporibus dignissimos voluptas.'
+        );
         expect(res.body.pagination).toMatchSchema(paginationSchema);
         expect(res.body.pagination).toMatchObject({
           page: 1,
@@ -245,9 +245,7 @@ describe('ContentsController (e2e)', () => {
         expect(res.status).toEqual(400);
         expect(res.body).toEqual({
           statusCode: 400,
-          message: [
-            'each value in includes must be one of the following values: article'
-          ],
+          message: ['each value in includes must be one of the following values: article'],
           error: 'Bad Request'
         });
       });
@@ -279,9 +277,7 @@ describe('ContentsController (e2e)', () => {
         expect(res.status).toEqual(400);
         expect(res.body).toEqual({
           statusCode: 400,
-          message: [
-            'filters.id.property foo should not exist'
-          ],
+          message: ['filters.id.property foo should not exist'],
           error: 'Bad Request'
         });
       });
@@ -511,16 +507,17 @@ describe('ContentsController (e2e)', () => {
       test('{"query":{"filters[body][foo]":"..."}} - 400 error, invalid filter operator', async () => {
         const res = await request(app.getHttpServer())
           .get('/api/contents')
-          .query({ 'filters[body][foo]': 'Quam est dicta libero non voluptatem sint. Vitae harum sed quia sequi vel voluptas inventore aut eius. Aperiam blanditiis optio ducimus delectus error repellendus asperiores molestiae.\n' +
+          .query({
+            'filters[body][foo]':
+              'Quam est dicta libero non voluptatem sint. Vitae harum sed quia sequi vel voluptas inventore aut eius. Aperiam blanditiis optio ducimus delectus error repellendus asperiores molestiae.\n' +
               'Assumenda et error et unde. Neque quas necessitatibus aliquam incidunt vel. Aliquid enim porro doloribus laudantium.\n' +
-              'Deserunt odio iusto quisquam amet ut neque aliquam quis. Architecto officia culpa. Repellat fugit molestias nostrum fugiat ut temporibus.' })
+              'Deserunt odio iusto quisquam amet ut neque aliquam quis. Architecto officia culpa. Repellat fugit molestias nostrum fugiat ut temporibus.'
+          })
           .set('Authorization', authorization);
         expect(res.status).toEqual(400);
         expect(res.body).toEqual({
           statusCode: 400,
-          message: [
-            'filters.body.property foo should not exist'
-          ],
+          message: ['filters.body.property foo should not exist'],
           error: 'Bad Request'
         });
       });
@@ -528,16 +525,17 @@ describe('ContentsController (e2e)', () => {
       test('{"query":{"filters[body][$eq]":"..."}} - 400 error, invalid filter value', async () => {
         const res = await request(app.getHttpServer())
           .get('/api/contents')
-          .query({ 'filters[body][$eq]': 'Quam est dicta libero non voluptatem sint. Vitae harum sed quia sequi vel voluptas inventore aut eius. Aperiam blanditiis optio ducimus delectus error repellendus asperiores molestiae.\n' +
+          .query({
+            'filters[body][$eq]':
+              'Quam est dicta libero non voluptatem sint. Vitae harum sed quia sequi vel voluptas inventore aut eius. Aperiam blanditiis optio ducimus delectus error repellendus asperiores molestiae.\n' +
               'Assumenda et error et unde. Neque quas necessitatibus aliquam incidunt vel. Aliquid enim porro doloribus laudantium.\n' +
-              'Deserunt odio iusto quisquam amet ut neque aliquam quis. Architecto officia culpa. Repellat fugit molestias nostrum fugiat ut temporibus.' })
+              'Deserunt odio iusto quisquam amet ut neque aliquam quis. Architecto officia culpa. Repellat fugit molestias nostrum fugiat ut temporibus.'
+          })
           .set('Authorization', authorization);
         expect(res.status).toEqual(400);
         expect(res.body).toEqual({
           statusCode: 400,
-          message: [
-            'filters.body.$eq must be shorter than or equal to 100 characters'
-          ],
+          message: ['filters.body.$eq must be shorter than or equal to 100 characters'],
           error: 'Bad Request'
         });
       });
@@ -545,16 +543,17 @@ describe('ContentsController (e2e)', () => {
       test('{"query":{"filters[body][$ne]":"..."}} - 400 error, invalid filter value', async () => {
         const res = await request(app.getHttpServer())
           .get('/api/contents')
-          .query({ 'filters[body][$ne]': 'Quam est dicta libero non voluptatem sint. Vitae harum sed quia sequi vel voluptas inventore aut eius. Aperiam blanditiis optio ducimus delectus error repellendus asperiores molestiae.\n' +
+          .query({
+            'filters[body][$ne]':
+              'Quam est dicta libero non voluptatem sint. Vitae harum sed quia sequi vel voluptas inventore aut eius. Aperiam blanditiis optio ducimus delectus error repellendus asperiores molestiae.\n' +
               'Assumenda et error et unde. Neque quas necessitatibus aliquam incidunt vel. Aliquid enim porro doloribus laudantium.\n' +
-              'Deserunt odio iusto quisquam amet ut neque aliquam quis. Architecto officia culpa. Repellat fugit molestias nostrum fugiat ut temporibus.' })
+              'Deserunt odio iusto quisquam amet ut neque aliquam quis. Architecto officia culpa. Repellat fugit molestias nostrum fugiat ut temporibus.'
+          })
           .set('Authorization', authorization);
         expect(res.status).toEqual(400);
         expect(res.body).toEqual({
           statusCode: 400,
-          message: [
-            'filters.body.$ne must be shorter than or equal to 100 characters'
-          ],
+          message: ['filters.body.$ne must be shorter than or equal to 100 characters'],
           error: 'Bad Request'
         });
       });
@@ -562,21 +561,21 @@ describe('ContentsController (e2e)', () => {
       test('{"query":{"filters[body][$in]":["...","..."]}} - 400 error, invalid filter value', async () => {
         const res = await request(app.getHttpServer())
           .get('/api/contents')
-          .query({ 'filters[body][$in]': [
-            'Quam est dicta libero non voluptatem sint. Vitae harum sed quia sequi vel voluptas inventore aut eius. Aperiam blanditiis optio ducimus delectus error repellendus asperiores molestiae.\n' +
-            'Assumenda et error et unde. Neque quas necessitatibus aliquam incidunt vel. Aliquid enim porro doloribus laudantium.\n' +
-            'Deserunt odio iusto quisquam amet ut neque aliquam quis. Architecto officia culpa. Repellat fugit molestias nostrum fugiat ut temporibus.',
-            'Voluptas exercitationem officia nisi. Quis quidem dicta molestias necessitatibus ullam soluta saepe voluptatibus. Quas similique qui.\n' +
-            'Occaecati ad ducimus quis non sapiente officia. Nisi iure eveniet fuga officiis earum praesentium. Reprehenderit ipsum eaque autem facere ex quaerat.\n' +
-            'Soluta soluta ullam sapiente corporis earum numquam corrupti voluptatum accusantium. Illum iure exercitationem optio deleniti perferendis ducimus perspiciatis repudiandae dicta. Cum repellendus laboriosam provident optio temporibus dignissimos voluptas.'
-          ] })
+          .query({
+            'filters[body][$in]': [
+              'Quam est dicta libero non voluptatem sint. Vitae harum sed quia sequi vel voluptas inventore aut eius. Aperiam blanditiis optio ducimus delectus error repellendus asperiores molestiae.\n' +
+                'Assumenda et error et unde. Neque quas necessitatibus aliquam incidunt vel. Aliquid enim porro doloribus laudantium.\n' +
+                'Deserunt odio iusto quisquam amet ut neque aliquam quis. Architecto officia culpa. Repellat fugit molestias nostrum fugiat ut temporibus.',
+              'Voluptas exercitationem officia nisi. Quis quidem dicta molestias necessitatibus ullam soluta saepe voluptatibus. Quas similique qui.\n' +
+                'Occaecati ad ducimus quis non sapiente officia. Nisi iure eveniet fuga officiis earum praesentium. Reprehenderit ipsum eaque autem facere ex quaerat.\n' +
+                'Soluta soluta ullam sapiente corporis earum numquam corrupti voluptatum accusantium. Illum iure exercitationem optio deleniti perferendis ducimus perspiciatis repudiandae dicta. Cum repellendus laboriosam provident optio temporibus dignissimos voluptas.'
+            ]
+          })
           .set('Authorization', authorization);
         expect(res.status).toEqual(400);
         expect(res.body).toEqual({
           statusCode: 400,
-          message: [
-            'filters.body.each value in $in must be shorter than or equal to 100 characters'
-          ],
+          message: ['filters.body.each value in $in must be shorter than or equal to 100 characters'],
           error: 'Bad Request'
         });
       });
@@ -584,21 +583,21 @@ describe('ContentsController (e2e)', () => {
       test('{"query":{"filters[body][$notIn]":["...","..."]}} - 400 error, invalid filter value', async () => {
         const res = await request(app.getHttpServer())
           .get('/api/contents')
-          .query({ 'filters[body][$notIn]': [
-            'Quam est dicta libero non voluptatem sint. Vitae harum sed quia sequi vel voluptas inventore aut eius. Aperiam blanditiis optio ducimus delectus error repellendus asperiores molestiae.\n' +
-            'Assumenda et error et unde. Neque quas necessitatibus aliquam incidunt vel. Aliquid enim porro doloribus laudantium.\n' +
-            'Deserunt odio iusto quisquam amet ut neque aliquam quis. Architecto officia culpa. Repellat fugit molestias nostrum fugiat ut temporibus.',
-            'Voluptas exercitationem officia nisi. Quis quidem dicta molestias necessitatibus ullam soluta saepe voluptatibus. Quas similique qui.\n' +
-            'Occaecati ad ducimus quis non sapiente officia. Nisi iure eveniet fuga officiis earum praesentium. Reprehenderit ipsum eaque autem facere ex quaerat.\n' +
-            'Soluta soluta ullam sapiente corporis earum numquam corrupti voluptatum accusantium. Illum iure exercitationem optio deleniti perferendis ducimus perspiciatis repudiandae dicta. Cum repellendus laboriosam provident optio temporibus dignissimos voluptas.'
-          ] })
+          .query({
+            'filters[body][$notIn]': [
+              'Quam est dicta libero non voluptatem sint. Vitae harum sed quia sequi vel voluptas inventore aut eius. Aperiam blanditiis optio ducimus delectus error repellendus asperiores molestiae.\n' +
+                'Assumenda et error et unde. Neque quas necessitatibus aliquam incidunt vel. Aliquid enim porro doloribus laudantium.\n' +
+                'Deserunt odio iusto quisquam amet ut neque aliquam quis. Architecto officia culpa. Repellat fugit molestias nostrum fugiat ut temporibus.',
+              'Voluptas exercitationem officia nisi. Quis quidem dicta molestias necessitatibus ullam soluta saepe voluptatibus. Quas similique qui.\n' +
+                'Occaecati ad ducimus quis non sapiente officia. Nisi iure eveniet fuga officiis earum praesentium. Reprehenderit ipsum eaque autem facere ex quaerat.\n' +
+                'Soluta soluta ullam sapiente corporis earum numquam corrupti voluptatum accusantium. Illum iure exercitationem optio deleniti perferendis ducimus perspiciatis repudiandae dicta. Cum repellendus laboriosam provident optio temporibus dignissimos voluptas.'
+            ]
+          })
           .set('Authorization', authorization);
         expect(res.status).toEqual(400);
         expect(res.body).toEqual({
           statusCode: 400,
-          message: [
-            'filters.body.each value in $notIn must be shorter than or equal to 100 characters'
-          ],
+          message: ['filters.body.each value in $notIn must be shorter than or equal to 100 characters'],
           error: 'Bad Request'
         });
       });
@@ -685,9 +684,7 @@ describe('ContentsController (e2e)', () => {
 
   describe('/api/contents/all (GET)', () => {
     test('{"query":{}} - 401 error, invalid token', async () => {
-      const res = await request(app.getHttpServer())
-        .get('/api/contents/all')
-        .query({});
+      const res = await request(app.getHttpServer()).get('/api/contents/all').query({});
       expect(res.status).toEqual(401);
       expect(res.body).toEqual({
         statusCode: 401,
@@ -704,9 +701,7 @@ describe('ContentsController (e2e)', () => {
       expect(res.status).toEqual(400);
       expect(res.body).toEqual({
         statusCode: 400,
-        message: [
-          'property foo should not exist'
-        ],
+        message: ['property foo should not exist'],
         error: 'Bad Request'
       });
     });
@@ -752,9 +747,12 @@ describe('ContentsController (e2e)', () => {
         expect(res.status).toEqual(200);
         expect(res.body).toMatchSchema(contentsListSchema);
         expect(res.body).toHaveLength(20);
-        expect(res.body).toHaveProperty('[0].body', 'Ab eum hic occaecati nisi magnam. Iusto inventore vero ea laborum libero exercitationem nam. Repudiandae nobis quis aspernatur.\n' +
-          'Corporis libero autem odio in hic nostrum. Inventore molestias dicta molestias esse. Officiis optio inventore vero tempore error quasi aperiam earum tenetur.\n' +
-          'Quae temporibus totam et molestias quas incidunt. Harum incidunt quo veniam aliquam neque ab ab possimus expedita. Quaerat non quod tempore.');
+        expect(res.body).toHaveProperty(
+          '[0].body',
+          'Ab eum hic occaecati nisi magnam. Iusto inventore vero ea laborum libero exercitationem nam. Repudiandae nobis quis aspernatur.\n' +
+            'Corporis libero autem odio in hic nostrum. Inventore molestias dicta molestias esse. Officiis optio inventore vero tempore error quasi aperiam earum tenetur.\n' +
+            'Quae temporibus totam et molestias quas incidunt. Harum incidunt quo veniam aliquam neque ab ab possimus expedita. Quaerat non quod tempore.'
+        );
       });
 
       test('{"query":{"sorts[body]":"desc"}} - success', async () => {
@@ -765,9 +763,12 @@ describe('ContentsController (e2e)', () => {
         expect(res.status).toEqual(200);
         expect(res.body).toMatchSchema(contentsListSchema);
         expect(res.body).toHaveLength(20);
-        expect(res.body).toHaveProperty('[0].body', 'Voluptas exercitationem officia nisi. Quis quidem dicta molestias necessitatibus ullam soluta saepe voluptatibus. Quas similique qui.\n' +
-          'Occaecati ad ducimus quis non sapiente officia. Nisi iure eveniet fuga officiis earum praesentium. Reprehenderit ipsum eaque autem facere ex quaerat.\n' +
-          'Soluta soluta ullam sapiente corporis earum numquam corrupti voluptatum accusantium. Illum iure exercitationem optio deleniti perferendis ducimus perspiciatis repudiandae dicta. Cum repellendus laboriosam provident optio temporibus dignissimos voluptas.');
+        expect(res.body).toHaveProperty(
+          '[0].body',
+          'Voluptas exercitationem officia nisi. Quis quidem dicta molestias necessitatibus ullam soluta saepe voluptatibus. Quas similique qui.\n' +
+            'Occaecati ad ducimus quis non sapiente officia. Nisi iure eveniet fuga officiis earum praesentium. Reprehenderit ipsum eaque autem facere ex quaerat.\n' +
+            'Soluta soluta ullam sapiente corporis earum numquam corrupti voluptatum accusantium. Illum iure exercitationem optio deleniti perferendis ducimus perspiciatis repudiandae dicta. Cum repellendus laboriosam provident optio temporibus dignissimos voluptas.'
+        );
       });
     });
 
@@ -780,9 +781,7 @@ describe('ContentsController (e2e)', () => {
         expect(res.status).toEqual(400);
         expect(res.body).toEqual({
           statusCode: 400,
-          message: [
-            'each value in includes must be one of the following values: article'
-          ],
+          message: ['each value in includes must be one of the following values: article'],
           error: 'Bad Request'
         });
       });
@@ -807,9 +806,7 @@ describe('ContentsController (e2e)', () => {
         expect(res.status).toEqual(400);
         expect(res.body).toEqual({
           statusCode: 400,
-          message: [
-            'filters.id.property foo should not exist'
-          ],
+          message: ['filters.id.property foo should not exist'],
           error: 'Bad Request'
         });
       });
@@ -955,16 +952,17 @@ describe('ContentsController (e2e)', () => {
       test('{"query":{"filters[body][foo]":"..."}} - 400 error, invalid filter operator', async () => {
         const res = await request(app.getHttpServer())
           .get('/api/contents/all')
-          .query({ 'filters[body][foo]': 'Quam est dicta libero non voluptatem sint. Vitae harum sed quia sequi vel voluptas inventore aut eius. Aperiam blanditiis optio ducimus delectus error repellendus asperiores molestiae.\n' +
+          .query({
+            'filters[body][foo]':
+              'Quam est dicta libero non voluptatem sint. Vitae harum sed quia sequi vel voluptas inventore aut eius. Aperiam blanditiis optio ducimus delectus error repellendus asperiores molestiae.\n' +
               'Assumenda et error et unde. Neque quas necessitatibus aliquam incidunt vel. Aliquid enim porro doloribus laudantium.\n' +
-              'Deserunt odio iusto quisquam amet ut neque aliquam quis. Architecto officia culpa. Repellat fugit molestias nostrum fugiat ut temporibus.' })
+              'Deserunt odio iusto quisquam amet ut neque aliquam quis. Architecto officia culpa. Repellat fugit molestias nostrum fugiat ut temporibus.'
+          })
           .set('Authorization', authorization);
         expect(res.status).toEqual(400);
         expect(res.body).toEqual({
           statusCode: 400,
-          message: [
-            'filters.body.property foo should not exist'
-          ],
+          message: ['filters.body.property foo should not exist'],
           error: 'Bad Request'
         });
       });
@@ -972,16 +970,17 @@ describe('ContentsController (e2e)', () => {
       test('{"query":{"filters[body][$eq]":"..."}} - 400 error, invalid filter value', async () => {
         const res = await request(app.getHttpServer())
           .get('/api/contents/all')
-          .query({ 'filters[body][$eq]': 'Quam est dicta libero non voluptatem sint. Vitae harum sed quia sequi vel voluptas inventore aut eius. Aperiam blanditiis optio ducimus delectus error repellendus asperiores molestiae.\n' +
+          .query({
+            'filters[body][$eq]':
+              'Quam est dicta libero non voluptatem sint. Vitae harum sed quia sequi vel voluptas inventore aut eius. Aperiam blanditiis optio ducimus delectus error repellendus asperiores molestiae.\n' +
               'Assumenda et error et unde. Neque quas necessitatibus aliquam incidunt vel. Aliquid enim porro doloribus laudantium.\n' +
-              'Deserunt odio iusto quisquam amet ut neque aliquam quis. Architecto officia culpa. Repellat fugit molestias nostrum fugiat ut temporibus.' })
+              'Deserunt odio iusto quisquam amet ut neque aliquam quis. Architecto officia culpa. Repellat fugit molestias nostrum fugiat ut temporibus.'
+          })
           .set('Authorization', authorization);
         expect(res.status).toEqual(400);
         expect(res.body).toEqual({
           statusCode: 400,
-          message: [
-            'filters.body.$eq must be shorter than or equal to 100 characters'
-          ],
+          message: ['filters.body.$eq must be shorter than or equal to 100 characters'],
           error: 'Bad Request'
         });
       });
@@ -989,16 +988,17 @@ describe('ContentsController (e2e)', () => {
       test('{"query":{"filters[body][$ne]":"..."}} - 400 error, invalid filter value', async () => {
         const res = await request(app.getHttpServer())
           .get('/api/contents/all')
-          .query({ 'filters[body][$ne]': 'Quam est dicta libero non voluptatem sint. Vitae harum sed quia sequi vel voluptas inventore aut eius. Aperiam blanditiis optio ducimus delectus error repellendus asperiores molestiae.\n' +
+          .query({
+            'filters[body][$ne]':
+              'Quam est dicta libero non voluptatem sint. Vitae harum sed quia sequi vel voluptas inventore aut eius. Aperiam blanditiis optio ducimus delectus error repellendus asperiores molestiae.\n' +
               'Assumenda et error et unde. Neque quas necessitatibus aliquam incidunt vel. Aliquid enim porro doloribus laudantium.\n' +
-              'Deserunt odio iusto quisquam amet ut neque aliquam quis. Architecto officia culpa. Repellat fugit molestias nostrum fugiat ut temporibus.' })
+              'Deserunt odio iusto quisquam amet ut neque aliquam quis. Architecto officia culpa. Repellat fugit molestias nostrum fugiat ut temporibus.'
+          })
           .set('Authorization', authorization);
         expect(res.status).toEqual(400);
         expect(res.body).toEqual({
           statusCode: 400,
-          message: [
-            'filters.body.$ne must be shorter than or equal to 100 characters'
-          ],
+          message: ['filters.body.$ne must be shorter than or equal to 100 characters'],
           error: 'Bad Request'
         });
       });
@@ -1006,21 +1006,21 @@ describe('ContentsController (e2e)', () => {
       test('{"query":{"filters[body][$in]":["...","..."]}} - 400 error, invalid filter value', async () => {
         const res = await request(app.getHttpServer())
           .get('/api/contents/all')
-          .query({ 'filters[body][$in]': [
-            'Quam est dicta libero non voluptatem sint. Vitae harum sed quia sequi vel voluptas inventore aut eius. Aperiam blanditiis optio ducimus delectus error repellendus asperiores molestiae.\n' +
-            'Assumenda et error et unde. Neque quas necessitatibus aliquam incidunt vel. Aliquid enim porro doloribus laudantium.\n' +
-            'Deserunt odio iusto quisquam amet ut neque aliquam quis. Architecto officia culpa. Repellat fugit molestias nostrum fugiat ut temporibus.',
-            'Voluptas exercitationem officia nisi. Quis quidem dicta molestias necessitatibus ullam soluta saepe voluptatibus. Quas similique qui.\n' +
-            'Occaecati ad ducimus quis non sapiente officia. Nisi iure eveniet fuga officiis earum praesentium. Reprehenderit ipsum eaque autem facere ex quaerat.\n' +
-            'Soluta soluta ullam sapiente corporis earum numquam corrupti voluptatum accusantium. Illum iure exercitationem optio deleniti perferendis ducimus perspiciatis repudiandae dicta. Cum repellendus laboriosam provident optio temporibus dignissimos voluptas.'
-          ] })
+          .query({
+            'filters[body][$in]': [
+              'Quam est dicta libero non voluptatem sint. Vitae harum sed quia sequi vel voluptas inventore aut eius. Aperiam blanditiis optio ducimus delectus error repellendus asperiores molestiae.\n' +
+                'Assumenda et error et unde. Neque quas necessitatibus aliquam incidunt vel. Aliquid enim porro doloribus laudantium.\n' +
+                'Deserunt odio iusto quisquam amet ut neque aliquam quis. Architecto officia culpa. Repellat fugit molestias nostrum fugiat ut temporibus.',
+              'Voluptas exercitationem officia nisi. Quis quidem dicta molestias necessitatibus ullam soluta saepe voluptatibus. Quas similique qui.\n' +
+                'Occaecati ad ducimus quis non sapiente officia. Nisi iure eveniet fuga officiis earum praesentium. Reprehenderit ipsum eaque autem facere ex quaerat.\n' +
+                'Soluta soluta ullam sapiente corporis earum numquam corrupti voluptatum accusantium. Illum iure exercitationem optio deleniti perferendis ducimus perspiciatis repudiandae dicta. Cum repellendus laboriosam provident optio temporibus dignissimos voluptas.'
+            ]
+          })
           .set('Authorization', authorization);
         expect(res.status).toEqual(400);
         expect(res.body).toEqual({
           statusCode: 400,
-          message: [
-            'filters.body.each value in $in must be shorter than or equal to 100 characters'
-          ],
+          message: ['filters.body.each value in $in must be shorter than or equal to 100 characters'],
           error: 'Bad Request'
         });
       });
@@ -1028,21 +1028,21 @@ describe('ContentsController (e2e)', () => {
       test('{"query":{"filters[body][$notIn]":["...","..."]}} - 400 error, invalid filter value', async () => {
         const res = await request(app.getHttpServer())
           .get('/api/contents/all')
-          .query({ 'filters[body][$notIn]': [
-            'Quam est dicta libero non voluptatem sint. Vitae harum sed quia sequi vel voluptas inventore aut eius. Aperiam blanditiis optio ducimus delectus error repellendus asperiores molestiae.\n' +
-            'Assumenda et error et unde. Neque quas necessitatibus aliquam incidunt vel. Aliquid enim porro doloribus laudantium.\n' +
-            'Deserunt odio iusto quisquam amet ut neque aliquam quis. Architecto officia culpa. Repellat fugit molestias nostrum fugiat ut temporibus.',
-            'Voluptas exercitationem officia nisi. Quis quidem dicta molestias necessitatibus ullam soluta saepe voluptatibus. Quas similique qui.\n' +
-            'Occaecati ad ducimus quis non sapiente officia. Nisi iure eveniet fuga officiis earum praesentium. Reprehenderit ipsum eaque autem facere ex quaerat.\n' +
-            'Soluta soluta ullam sapiente corporis earum numquam corrupti voluptatum accusantium. Illum iure exercitationem optio deleniti perferendis ducimus perspiciatis repudiandae dicta. Cum repellendus laboriosam provident optio temporibus dignissimos voluptas.'
-          ] })
+          .query({
+            'filters[body][$notIn]': [
+              'Quam est dicta libero non voluptatem sint. Vitae harum sed quia sequi vel voluptas inventore aut eius. Aperiam blanditiis optio ducimus delectus error repellendus asperiores molestiae.\n' +
+                'Assumenda et error et unde. Neque quas necessitatibus aliquam incidunt vel. Aliquid enim porro doloribus laudantium.\n' +
+                'Deserunt odio iusto quisquam amet ut neque aliquam quis. Architecto officia culpa. Repellat fugit molestias nostrum fugiat ut temporibus.',
+              'Voluptas exercitationem officia nisi. Quis quidem dicta molestias necessitatibus ullam soluta saepe voluptatibus. Quas similique qui.\n' +
+                'Occaecati ad ducimus quis non sapiente officia. Nisi iure eveniet fuga officiis earum praesentium. Reprehenderit ipsum eaque autem facere ex quaerat.\n' +
+                'Soluta soluta ullam sapiente corporis earum numquam corrupti voluptatum accusantium. Illum iure exercitationem optio deleniti perferendis ducimus perspiciatis repudiandae dicta. Cum repellendus laboriosam provident optio temporibus dignissimos voluptas.'
+            ]
+          })
           .set('Authorization', authorization);
         expect(res.status).toEqual(400);
         expect(res.body).toEqual({
           statusCode: 400,
-          message: [
-            'filters.body.each value in $notIn must be shorter than or equal to 100 characters'
-          ],
+          message: ['filters.body.each value in $notIn must be shorter than or equal to 100 characters'],
           error: 'Bad Request'
         });
       });
@@ -1101,9 +1101,7 @@ describe('ContentsController (e2e)', () => {
 
   describe('/api/contents/:id (GET)', () => {
     test('{"params":{"id":1},"query":{}} - 401 error, invalid token', async () => {
-      const res = await request(app.getHttpServer())
-        .get('/api/contents/1')
-        .query({});
+      const res = await request(app.getHttpServer()).get('/api/contents/1').query({});
       expect(res.status).toEqual(401);
       expect(res.body).toEqual({
         statusCode: 401,
@@ -1145,9 +1143,7 @@ describe('ContentsController (e2e)', () => {
       expect(res.status).toEqual(400);
       expect(res.body).toEqual({
         statusCode: 400,
-        message: [
-          'property foo should not exist'
-        ],
+        message: ['property foo should not exist'],
         error: 'Bad Request'
       });
     });
@@ -1171,9 +1167,7 @@ describe('ContentsController (e2e)', () => {
         expect(res.status).toEqual(400);
         expect(res.body).toEqual({
           statusCode: 400,
-          message: [
-            'each value in includes must be one of the following values: article'
-          ],
+          message: ['each value in includes must be one of the following values: article'],
           error: 'Bad Request'
         });
       });
@@ -1194,13 +1188,12 @@ describe('ContentsController (e2e)', () => {
     test('{"body":{"article_id":21,"body":"..."}} - 401 error, invalid token', async () => {
       const body = {
         article_id: 21,
-        body: 'Ipsum corrupti inventore molestiae assumenda libero odio harum molestiae. Rerum repellat doloribus earum hic officiis. Odio fugit quo nemo.\n' +
+        body:
+          'Ipsum corrupti inventore molestiae assumenda libero odio harum molestiae. Rerum repellat doloribus earum hic officiis. Odio fugit quo nemo.\n' +
           'Optio rem commodi placeat molestias corrupti exercitationem id deserunt. Veritatis inventore dolorem corporis quo. Doloremque cupiditate necessitatibus aliquid exercitationem accusantium repudiandae accusamus itaque.\n' +
           'Quasi tempora reprehenderit quod quam aliquid aut pariatur. Ipsum dicta nostrum reprehenderit fugiat. Soluta autem aspernatur modi id.'
       };
-      const res = await request(app.getHttpServer())
-        .post('/api/contents')
-        .send(body);
+      const res = await request(app.getHttpServer()).post('/api/contents').send(body);
       expect(res.status).toEqual(401);
       expect(res.body).toEqual({
         statusCode: 401,
@@ -1212,7 +1205,8 @@ describe('ContentsController (e2e)', () => {
     test('{"body":{"article_id":100,"body":"..."}} - 400 error, article_id field must contain id of existing Article', async () => {
       const body = {
         article_id: 100,
-        body: 'Ipsum corrupti inventore molestiae assumenda libero odio harum molestiae. Rerum repellat doloribus earum hic officiis. Odio fugit quo nemo.\n' +
+        body:
+          'Ipsum corrupti inventore molestiae assumenda libero odio harum molestiae. Rerum repellat doloribus earum hic officiis. Odio fugit quo nemo.\n' +
           'Optio rem commodi placeat molestias corrupti exercitationem id deserunt. Veritatis inventore dolorem corporis quo. Doloremque cupiditate necessitatibus aliquid exercitationem accusantium repudiandae accusamus itaque.\n' +
           'Quasi tempora reprehenderit quod quam aliquid aut pariatur. Ipsum dicta nostrum reprehenderit fugiat. Soluta autem aspernatur modi id.'
       };
@@ -1223,9 +1217,7 @@ describe('ContentsController (e2e)', () => {
       expect(res.status).toEqual(400);
       expect(res.body).toEqual({
         statusCode: 400,
-        message: [
-          'article_id field must contain id of existing Article'
-        ],
+        message: ['article_id field must contain id of existing Article'],
         error: 'Bad Request'
       });
     });
@@ -1233,7 +1225,8 @@ describe('ContentsController (e2e)', () => {
     test('{"body":{"article_id":1,"body":"..."}} - 400 error, article_id field must unique', async () => {
       const body = {
         article_id: 1,
-        body: 'Ipsum corrupti inventore molestiae assumenda libero odio harum molestiae. Rerum repellat doloribus earum hic officiis. Odio fugit quo nemo.\n' +
+        body:
+          'Ipsum corrupti inventore molestiae assumenda libero odio harum molestiae. Rerum repellat doloribus earum hic officiis. Odio fugit quo nemo.\n' +
           'Optio rem commodi placeat molestias corrupti exercitationem id deserunt. Veritatis inventore dolorem corporis quo. Doloremque cupiditate necessitatibus aliquid exercitationem accusantium repudiandae accusamus itaque.\n' +
           'Quasi tempora reprehenderit quod quam aliquid aut pariatur. Ipsum dicta nostrum reprehenderit fugiat. Soluta autem aspernatur modi id.'
       };
@@ -1244,9 +1237,7 @@ describe('ContentsController (e2e)', () => {
       expect(res.status).toEqual(400);
       expect(res.body).toEqual({
         statusCode: 400,
-        message: [
-          'article_id field must be unique'
-        ],
+        message: ['article_id field must be unique'],
         error: 'Bad Request'
       });
     });
@@ -1257,14 +1248,16 @@ describe('ContentsController (e2e)', () => {
         .send({
           user_id: 1,
           title: 'illum beatae soluta',
-          description: 'Vero nihil eius quidem. Quaerat ipsum rem animi fugit pariatur deleniti. Neque unde ad quam illo facere.',
+          description:
+            'Vero nihil eius quidem. Quaerat ipsum rem animi fugit pariatur deleniti. Neque unde ad quam illo facere.',
           status: 'published'
         })
         .set('Authorization', authorization);
 
       const body = {
         article_id: 21,
-        body: 'Ipsum corrupti inventore molestiae assumenda libero odio harum molestiae. Rerum repellat doloribus earum hic officiis. Odio fugit quo nemo.\n' +
+        body:
+          'Ipsum corrupti inventore molestiae assumenda libero odio harum molestiae. Rerum repellat doloribus earum hic officiis. Odio fugit quo nemo.\n' +
           'Optio rem commodi placeat molestias corrupti exercitationem id deserunt. Veritatis inventore dolorem corporis quo. Doloremque cupiditate necessitatibus aliquid exercitationem accusantium repudiandae accusamus itaque.\n' +
           'Quasi tempora reprehenderit quod quam aliquid aut pariatur. Ipsum dicta nostrum reprehenderit fugiat. Soluta autem aspernatur modi id.'
       };
@@ -1277,7 +1270,8 @@ describe('ContentsController (e2e)', () => {
       expect(res.body).toMatchObject({
         id: 21,
         article_id: 21,
-        body: 'Ipsum corrupti inventore molestiae assumenda libero odio harum molestiae. Rerum repellat doloribus earum hic officiis. Odio fugit quo nemo.\n' +
+        body:
+          'Ipsum corrupti inventore molestiae assumenda libero odio harum molestiae. Rerum repellat doloribus earum hic officiis. Odio fugit quo nemo.\n' +
           'Optio rem commodi placeat molestias corrupti exercitationem id deserunt. Veritatis inventore dolorem corporis quo. Doloremque cupiditate necessitatibus aliquid exercitationem accusantium repudiandae accusamus itaque.\n' +
           'Quasi tempora reprehenderit quod quam aliquid aut pariatur. Ipsum dicta nostrum reprehenderit fugiat. Soluta autem aspernatur modi id.'
       });
@@ -1288,13 +1282,12 @@ describe('ContentsController (e2e)', () => {
     test('{"params":{"id":21},"body":{"article_id":21,"body":"..."}} - 401 error, invalid token', async () => {
       const body = {
         article_id: 21,
-        body: 'Earum corrupti inventore molestiae assumenda libero odio harum molestiae. Rerum repellat doloribus earum hic officiis. Odio fugit quo nemo.\n' +
+        body:
+          'Earum corrupti inventore molestiae assumenda libero odio harum molestiae. Rerum repellat doloribus earum hic officiis. Odio fugit quo nemo.\n' +
           'Optio rem commodi placeat molestias corrupti exercitationem id deserunt. Veritatis inventore dolorem corporis quo. Doloremque cupiditate necessitatibus aliquid exercitationem accusantium repudiandae accusamus itaque.\n' +
           'Quasi tempora reprehenderit quod quam aliquid aut pariatur. Ipsum dicta nostrum reprehenderit fugiat. Soluta autem aspernatur modi id.'
       };
-      const res = await request(app.getHttpServer())
-        .put('/api/contents/21')
-        .send(body);
+      const res = await request(app.getHttpServer()).put('/api/contents/21').send(body);
       expect(res.status).toEqual(401);
       expect(res.body).toEqual({
         statusCode: 401,
@@ -1306,7 +1299,8 @@ describe('ContentsController (e2e)', () => {
     test('{"params":{"id":"a"},"body":{"article_id":21,"body":"..."}} - 400 error, id param must be a number', async () => {
       const body = {
         article_id: 21,
-        body: 'Earum corrupti inventore molestiae assumenda libero odio harum molestiae. Rerum repellat doloribus earum hic officiis. Odio fugit quo nemo.\n' +
+        body:
+          'Earum corrupti inventore molestiae assumenda libero odio harum molestiae. Rerum repellat doloribus earum hic officiis. Odio fugit quo nemo.\n' +
           'Optio rem commodi placeat molestias corrupti exercitationem id deserunt. Veritatis inventore dolorem corporis quo. Doloremque cupiditate necessitatibus aliquid exercitationem accusantium repudiandae accusamus itaque.\n' +
           'Quasi tempora reprehenderit quod quam aliquid aut pariatur. Ipsum dicta nostrum reprehenderit fugiat. Soluta autem aspernatur modi id.'
       };
@@ -1325,7 +1319,8 @@ describe('ContentsController (e2e)', () => {
     test('{"params":{"id":100},"body":{"article_id":21,"body":"..."}} - 404 error, entity not found', async () => {
       const body = {
         article_id: 21,
-        body: 'Earum corrupti inventore molestiae assumenda libero odio harum molestiae. Rerum repellat doloribus earum hic officiis. Odio fugit quo nemo.\n' +
+        body:
+          'Earum corrupti inventore molestiae assumenda libero odio harum molestiae. Rerum repellat doloribus earum hic officiis. Odio fugit quo nemo.\n' +
           'Optio rem commodi placeat molestias corrupti exercitationem id deserunt. Veritatis inventore dolorem corporis quo. Doloremque cupiditate necessitatibus aliquid exercitationem accusantium repudiandae accusamus itaque.\n' +
           'Quasi tempora reprehenderit quod quam aliquid aut pariatur. Ipsum dicta nostrum reprehenderit fugiat. Soluta autem aspernatur modi id.'
       };
@@ -1343,7 +1338,8 @@ describe('ContentsController (e2e)', () => {
     test('{"params":{"id":21},"body":{"article_id":100,"body":"..."}} - 400 error, article_id field must contain id of existing Article', async () => {
       const body = {
         article_id: 100,
-        body: 'Earum corrupti inventore molestiae assumenda libero odio harum molestiae. Rerum repellat doloribus earum hic officiis. Odio fugit quo nemo.\n' +
+        body:
+          'Earum corrupti inventore molestiae assumenda libero odio harum molestiae. Rerum repellat doloribus earum hic officiis. Odio fugit quo nemo.\n' +
           'Optio rem commodi placeat molestias corrupti exercitationem id deserunt. Veritatis inventore dolorem corporis quo. Doloremque cupiditate necessitatibus aliquid exercitationem accusantium repudiandae accusamus itaque.\n' +
           'Quasi tempora reprehenderit quod quam aliquid aut pariatur. Ipsum dicta nostrum reprehenderit fugiat. Soluta autem aspernatur modi id.'
       };
@@ -1354,9 +1350,7 @@ describe('ContentsController (e2e)', () => {
       expect(res.status).toEqual(400);
       expect(res.body).toEqual({
         statusCode: 400,
-        message: [
-          'article_id field must contain id of existing Article'
-        ],
+        message: ['article_id field must contain id of existing Article'],
         error: 'Bad Request'
       });
     });
@@ -1364,7 +1358,8 @@ describe('ContentsController (e2e)', () => {
     test('{"params":{"id":21},"body":{"article_id":1,"body":"..."}} - 400 error, article_id field must be unique', async () => {
       const body = {
         article_id: 1,
-        body: 'Earum corrupti inventore molestiae assumenda libero odio harum molestiae. Rerum repellat doloribus earum hic officiis. Odio fugit quo nemo.\n' +
+        body:
+          'Earum corrupti inventore molestiae assumenda libero odio harum molestiae. Rerum repellat doloribus earum hic officiis. Odio fugit quo nemo.\n' +
           'Optio rem commodi placeat molestias corrupti exercitationem id deserunt. Veritatis inventore dolorem corporis quo. Doloremque cupiditate necessitatibus aliquid exercitationem accusantium repudiandae accusamus itaque.\n' +
           'Quasi tempora reprehenderit quod quam aliquid aut pariatur. Ipsum dicta nostrum reprehenderit fugiat. Soluta autem aspernatur modi id.'
       };
@@ -1375,9 +1370,7 @@ describe('ContentsController (e2e)', () => {
       expect(res.status).toEqual(400);
       expect(res.body).toEqual({
         statusCode: 400,
-        message: [
-          'article_id field must be unique'
-        ],
+        message: ['article_id field must be unique'],
         error: 'Bad Request'
       });
     });
@@ -1385,7 +1378,8 @@ describe('ContentsController (e2e)', () => {
     test('{"params":{"id":21},"body":{"article_id":21,"body":"..."}} - success', async () => {
       const body = {
         article_id: 21,
-        body: 'Earum corrupti inventore molestiae assumenda libero odio harum molestiae. Rerum repellat doloribus earum hic officiis. Odio fugit quo nemo.\n' +
+        body:
+          'Earum corrupti inventore molestiae assumenda libero odio harum molestiae. Rerum repellat doloribus earum hic officiis. Odio fugit quo nemo.\n' +
           'Optio rem commodi placeat molestias corrupti exercitationem id deserunt. Veritatis inventore dolorem corporis quo. Doloremque cupiditate necessitatibus aliquid exercitationem accusantium repudiandae accusamus itaque.\n' +
           'Quasi tempora reprehenderit quod quam aliquid aut pariatur. Ipsum dicta nostrum reprehenderit fugiat. Soluta autem aspernatur modi id.'
       };
@@ -1398,7 +1392,8 @@ describe('ContentsController (e2e)', () => {
       expect(res.body).toMatchObject({
         id: 21,
         article_id: 21,
-        body: 'Earum corrupti inventore molestiae assumenda libero odio harum molestiae. Rerum repellat doloribus earum hic officiis. Odio fugit quo nemo.\n' +
+        body:
+          'Earum corrupti inventore molestiae assumenda libero odio harum molestiae. Rerum repellat doloribus earum hic officiis. Odio fugit quo nemo.\n' +
           'Optio rem commodi placeat molestias corrupti exercitationem id deserunt. Veritatis inventore dolorem corporis quo. Doloremque cupiditate necessitatibus aliquid exercitationem accusantium repudiandae accusamus itaque.\n' +
           'Quasi tempora reprehenderit quod quam aliquid aut pariatur. Ipsum dicta nostrum reprehenderit fugiat. Soluta autem aspernatur modi id.'
       });
@@ -1417,9 +1412,7 @@ describe('ContentsController (e2e)', () => {
     });
 
     test('{"params":{"id":"a"}} - 400 error, id param must be a number', async () => {
-      const res = await request(app.getHttpServer())
-        .delete('/api/contents/a')
-        .set('Authorization', authorization);
+      const res = await request(app.getHttpServer()).delete('/api/contents/a').set('Authorization', authorization);
       expect(res.status).toEqual(400);
       expect(res.body).toEqual({
         statusCode: 400,
@@ -1429,9 +1422,7 @@ describe('ContentsController (e2e)', () => {
     });
 
     test('{"params":{"id":100}} - 404 error, entity not found', async () => {
-      const res = await request(app.getHttpServer())
-        .delete('/api/contents/100')
-        .set('Authorization', authorization);
+      const res = await request(app.getHttpServer()).delete('/api/contents/100').set('Authorization', authorization);
       expect(res.status).toEqual(404);
       expect(res.body).toEqual({
         statusCode: 404,
@@ -1440,9 +1431,7 @@ describe('ContentsController (e2e)', () => {
     });
 
     test('{"params":{"id":21}} - success', async () => {
-      const res = await request(app.getHttpServer())
-        .delete('/api/contents/21')
-        .set('Authorization', authorization);
+      const res = await request(app.getHttpServer()).delete('/api/contents/21').set('Authorization', authorization);
       expect(res.status).toEqual(204);
       expect(res.body).toEqual({});
     });

@@ -22,15 +22,17 @@ import {
   ApiTags,
   ApiUnauthorizedResponse
 } from '@nestjs/swagger';
+
 import { ApiOkPaginatedResponse } from '../../common/decorators/api-ok-paginated-response';
 import { FindResponse } from '../../common/interfaces';
 import { Admin } from '../../entities/admin.entity';
+
+import { AdminsService } from './admins.service';
 import { CreateAdminDto } from './dto/create-admin.dto';
 import { FindAdminsDto } from './dto/find-admins.dto';
 import { FindAllAdminsDto } from './dto/find-all-admins.dto';
 import { FindOneAdminDto } from './dto/find-one-admin.dto';
 import { UpdateAdminDto } from './dto/update-admin.dto';
-import { AdminsService } from './admins.service';
 
 @ApiTags('Admins')
 @Controller('admins')

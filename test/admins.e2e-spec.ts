@@ -1,15 +1,16 @@
 import { INestApplication } from '@nestjs/common';
 import { matchers } from 'jest-json-schema';
 import * as request from 'supertest';
+
 import MigrationsManager from '../src/common/migration/migrations-manager';
 import SeedsManager from '../src/common/seed/seeds-manager';
+
 import { adminSchema, adminsListSchema, paginationSchema } from './_tools/schemas';
 import TestAppManager from './_tools/test-app-manager';
 
 expect.extend(matchers);
 
 describe('AdminsController (e2e)', () => {
-
   let app: INestApplication;
   let authorization: string;
 
@@ -22,9 +23,7 @@ describe('AdminsController (e2e)', () => {
 
   describe('/api/admins (GET)', () => {
     test('{"query":{}} - 401 error, invalid token', async () => {
-      const res = await request(app.getHttpServer())
-        .get('/api/admins')
-        .query({});
+      const res = await request(app.getHttpServer()).get('/api/admins').query({});
       expect(res.status).toEqual(401);
       expect(res.body).toEqual({
         statusCode: 401,
@@ -41,18 +40,13 @@ describe('AdminsController (e2e)', () => {
       expect(res.status).toEqual(400);
       expect(res.body).toEqual({
         statusCode: 400,
-        message: [
-          'property foo should not exist'
-        ],
+        message: ['property foo should not exist'],
         error: 'Bad Request'
       });
     });
 
     test('{"query":{}} - success', async () => {
-      const res = await request(app.getHttpServer())
-        .get('/api/admins')
-        .query({})
-        .set('Authorization', authorization);
+      const res = await request(app.getHttpServer()).get('/api/admins').query({}).set('Authorization', authorization);
       expect(res.status).toEqual(200);
       expect(res.body.data).toMatchSchema(adminsListSchema);
       expect(res.body.data).toHaveLength(1);
@@ -104,9 +98,7 @@ describe('AdminsController (e2e)', () => {
 
   describe('/api/admins/all (GET)', () => {
     test('{"query":{}} - 401 error, invalid token', async () => {
-      const res = await request(app.getHttpServer())
-        .get('/api/admins/all')
-        .query({});
+      const res = await request(app.getHttpServer()).get('/api/admins/all').query({});
       expect(res.status).toEqual(401);
       expect(res.body).toEqual({
         statusCode: 401,
@@ -123,9 +115,7 @@ describe('AdminsController (e2e)', () => {
       expect(res.status).toEqual(400);
       expect(res.body).toEqual({
         statusCode: 400,
-        message: [
-          'property foo should not exist'
-        ],
+        message: ['property foo should not exist'],
         error: 'Bad Request'
       });
     });
@@ -143,9 +133,7 @@ describe('AdminsController (e2e)', () => {
 
   describe('/api/admins/:id (GET)', () => {
     test('{"params":{"id":1},"query":{}} - 401 error, invalid token', async () => {
-      const res = await request(app.getHttpServer())
-        .get('/api/admins/1')
-        .query({});
+      const res = await request(app.getHttpServer()).get('/api/admins/1').query({});
       expect(res.status).toEqual(401);
       expect(res.body).toEqual({
         statusCode: 401,
@@ -155,10 +143,7 @@ describe('AdminsController (e2e)', () => {
     });
 
     test('{"params":{"id":"a"},"query":{}} - 400 error, id param must be a number', async () => {
-      const res = await request(app.getHttpServer())
-        .get('/api/admins/a')
-        .query({})
-        .set('Authorization', authorization);
+      const res = await request(app.getHttpServer()).get('/api/admins/a').query({}).set('Authorization', authorization);
       expect(res.status).toEqual(400);
       expect(res.body).toEqual({
         statusCode: 400,
@@ -187,18 +172,13 @@ describe('AdminsController (e2e)', () => {
       expect(res.status).toEqual(400);
       expect(res.body).toEqual({
         statusCode: 400,
-        message: [
-          'property foo should not exist'
-        ],
+        message: ['property foo should not exist'],
         error: 'Bad Request'
       });
     });
 
     test('{"params":{"id":1},"query":{}} - success', async () => {
-      const res = await request(app.getHttpServer())
-        .get('/api/admins/1')
-        .query({})
-        .set('Authorization', authorization);
+      const res = await request(app.getHttpServer()).get('/api/admins/1').query({}).set('Authorization', authorization);
       expect(res.status).toEqual(200);
       expect(res.body).toMatchSchema(adminSchema);
       expect(res.body).toHaveProperty('id', 1);
@@ -213,9 +193,7 @@ describe('AdminsController (e2e)', () => {
         password: 'RDnB7LAR',
         email: 'anatoly.muravyov@gmail.com'
       };
-      const res = await request(app.getHttpServer())
-        .post('/api/admins')
-        .send(body);
+      const res = await request(app.getHttpServer()).post('/api/admins').send(body);
       expect(res.status).toEqual(401);
       expect(res.body).toEqual({
         statusCode: 401,
@@ -231,16 +209,11 @@ describe('AdminsController (e2e)', () => {
         password: 'RDnB7LAR',
         email: 'anatoly.muravyov@gmail.com'
       };
-      const res = await request(app.getHttpServer())
-        .post('/api/admins')
-        .send(body)
-        .set('Authorization', authorization);
+      const res = await request(app.getHttpServer()).post('/api/admins').send(body).set('Authorization', authorization);
       expect(res.status).toEqual(400);
       expect(res.body).toEqual({
         statusCode: 400,
-        message: [
-          'username field must be unique'
-        ],
+        message: ['username field must be unique'],
         error: 'Bad Request'
       });
     });
@@ -252,16 +225,11 @@ describe('AdminsController (e2e)', () => {
         password: 'RDnB7LAR',
         email: 'anatoly.muravyov+gmail.com'
       };
-      const res = await request(app.getHttpServer())
-        .post('/api/admins')
-        .send(body)
-        .set('Authorization', authorization);
+      const res = await request(app.getHttpServer()).post('/api/admins').send(body).set('Authorization', authorization);
       expect(res.status).toEqual(400);
       expect(res.body).toEqual({
         statusCode: 400,
-        message: [
-          'email must be an email'
-        ],
+        message: ['email must be an email'],
         error: 'Bad Request'
       });
     });
@@ -273,16 +241,11 @@ describe('AdminsController (e2e)', () => {
         password: 'RDnB7LAR',
         email: 'nikolay.shamayko@gmail.com'
       };
-      const res = await request(app.getHttpServer())
-        .post('/api/admins')
-        .send(body)
-        .set('Authorization', authorization);
+      const res = await request(app.getHttpServer()).post('/api/admins').send(body).set('Authorization', authorization);
       expect(res.status).toEqual(400);
       expect(res.body).toEqual({
         statusCode: 400,
-        message: [
-          'email field must be unique'
-        ],
+        message: ['email field must be unique'],
         error: 'Bad Request'
       });
     });
@@ -294,10 +257,7 @@ describe('AdminsController (e2e)', () => {
         password: 'RDnB7LAR',
         email: 'anatoly.muravyov@gmail.com'
       };
-      const res = await request(app.getHttpServer())
-        .post('/api/admins')
-        .send(body)
-        .set('Authorization', authorization);
+      const res = await request(app.getHttpServer()).post('/api/admins').send(body).set('Authorization', authorization);
       expect(res.status).toEqual(201);
       expect(res.body).toMatchSchema(adminSchema);
       expect(res.body).toMatchObject({
@@ -316,9 +276,7 @@ describe('AdminsController (e2e)', () => {
         username: 'pest',
         email: 'anatoly.muravyov@gmail.com'
       };
-      const res = await request(app.getHttpServer())
-        .put('/api/admins/2')
-        .send(body);
+      const res = await request(app.getHttpServer()).put('/api/admins/2').send(body);
       expect(res.status).toEqual(401);
       expect(res.body).toEqual({
         statusCode: 401,
@@ -375,9 +333,7 @@ describe('AdminsController (e2e)', () => {
       expect(res.status).toEqual(400);
       expect(res.body).toEqual({
         statusCode: 400,
-        message: [
-          'username field must be unique'
-        ],
+        message: ['username field must be unique'],
         error: 'Bad Request'
       });
     });
@@ -395,9 +351,7 @@ describe('AdminsController (e2e)', () => {
       expect(res.status).toEqual(400);
       expect(res.body).toEqual({
         statusCode: 400,
-        message: [
-          'email must be an email'
-        ],
+        message: ['email must be an email'],
         error: 'Bad Request'
       });
     });
@@ -415,9 +369,7 @@ describe('AdminsController (e2e)', () => {
       expect(res.status).toEqual(400);
       expect(res.body).toEqual({
         statusCode: 400,
-        message: [
-          'email field must be unique'
-        ],
+        message: ['email field must be unique'],
         error: 'Bad Request'
       });
     });
@@ -455,9 +407,7 @@ describe('AdminsController (e2e)', () => {
     });
 
     test('{"params":{"id":"a"}} - 400 error, id param must be a number', async () => {
-      const res = await request(app.getHttpServer())
-        .delete('/api/admins/a')
-        .set('Authorization', authorization);
+      const res = await request(app.getHttpServer()).delete('/api/admins/a').set('Authorization', authorization);
       expect(res.status).toEqual(400);
       expect(res.body).toEqual({
         statusCode: 400,
@@ -467,9 +417,7 @@ describe('AdminsController (e2e)', () => {
     });
 
     test('{"params":{"id":100}} - 404 error, entity not found', async () => {
-      const res = await request(app.getHttpServer())
-        .delete('/api/admins/100')
-        .set('Authorization', authorization);
+      const res = await request(app.getHttpServer()).delete('/api/admins/100').set('Authorization', authorization);
       expect(res.status).toEqual(404);
       expect(res.body).toEqual({
         statusCode: 404,
@@ -478,9 +426,7 @@ describe('AdminsController (e2e)', () => {
     });
 
     test('{"params":{"id":2}} - success', async () => {
-      const res = await request(app.getHttpServer())
-        .delete('/api/admins/2')
-        .set('Authorization', authorization);
+      const res = await request(app.getHttpServer()).delete('/api/admins/2').set('Authorization', authorization);
       expect(res.status).toEqual(204);
       expect(res.body).toEqual({});
     });

@@ -1,8 +1,10 @@
 import { INestApplication } from '@nestjs/common';
 import { matchers } from 'jest-json-schema';
 import * as request from 'supertest';
+
 import MigrationsManager from '../src/common/migration/migrations-manager';
 import SeedsManager from '../src/common/seed/seeds-manager';
+
 import {
   tagSchema,
   tagsListSchema,
@@ -15,7 +17,6 @@ import TestAppManager from './_tools/test-app-manager';
 expect.extend(matchers);
 
 describe('TagsController (e2e)', () => {
-
   let app: INestApplication;
   let authorization: string;
 
@@ -28,9 +29,7 @@ describe('TagsController (e2e)', () => {
 
   describe('/api/tags (GET)', () => {
     test('{"query":{}} - 401 error, invalid token', async () => {
-      const res = await request(app.getHttpServer())
-        .get('/api/tags')
-        .query({});
+      const res = await request(app.getHttpServer()).get('/api/tags').query({});
       expect(res.status).toEqual(401);
       expect(res.body).toEqual({
         statusCode: 401,
@@ -47,18 +46,13 @@ describe('TagsController (e2e)', () => {
       expect(res.status).toEqual(400);
       expect(res.body).toEqual({
         statusCode: 400,
-        message: [
-          'property foo should not exist'
-        ],
+        message: ['property foo should not exist'],
         error: 'Bad Request'
       });
     });
 
     test('{"query":{}} - success', async () => {
-      const res = await request(app.getHttpServer())
-        .get('/api/tags')
-        .query({})
-        .set('Authorization', authorization);
+      const res = await request(app.getHttpServer()).get('/api/tags').query({}).set('Authorization', authorization);
       expect(res.status).toEqual(200);
       expect(res.body.data).toMatchSchema(tagsListSchema);
       expect(res.body.data).toHaveLength(5);
@@ -190,9 +184,7 @@ describe('TagsController (e2e)', () => {
         expect(res.status).toEqual(400);
         expect(res.body).toEqual({
           statusCode: 400,
-          message: [
-            'each value in includes must be one of the following values: articles'
-          ],
+          message: ['each value in includes must be one of the following values: articles'],
           error: 'Bad Request'
         });
       });
@@ -224,9 +216,7 @@ describe('TagsController (e2e)', () => {
         expect(res.status).toEqual(400);
         expect(res.body).toEqual({
           statusCode: 400,
-          message: [
-            'filters.id.property foo should not exist'
-          ],
+          message: ['filters.id.property foo should not exist'],
           error: 'Bad Request'
         });
       });
@@ -461,9 +451,7 @@ describe('TagsController (e2e)', () => {
         expect(res.status).toEqual(400);
         expect(res.body).toEqual({
           statusCode: 400,
-          message: [
-            'filters.name.property foo should not exist'
-          ],
+          message: ['filters.name.property foo should not exist'],
           error: 'Bad Request'
         });
       });
@@ -622,9 +610,7 @@ describe('TagsController (e2e)', () => {
 
   describe('/api/tags/all (GET)', () => {
     test('{"query":{}} - 401 error, invalid token', async () => {
-      const res = await request(app.getHttpServer())
-        .get('/api/tags/all')
-        .query({});
+      const res = await request(app.getHttpServer()).get('/api/tags/all').query({});
       expect(res.status).toEqual(401);
       expect(res.body).toEqual({
         statusCode: 401,
@@ -641,18 +627,13 @@ describe('TagsController (e2e)', () => {
       expect(res.status).toEqual(400);
       expect(res.body).toEqual({
         statusCode: 400,
-        message: [
-          'property foo should not exist'
-        ],
+        message: ['property foo should not exist'],
         error: 'Bad Request'
       });
     });
 
     test('{"query":{}} - success', async () => {
-      const res = await request(app.getHttpServer())
-        .get('/api/tags/all')
-        .query({})
-        .set('Authorization', authorization);
+      const res = await request(app.getHttpServer()).get('/api/tags/all').query({}).set('Authorization', authorization);
       expect(res.status).toEqual(200);
       expect(res.body).toMatchSchema(tagsListSchema);
       expect(res.body).toHaveLength(5);
@@ -713,9 +694,7 @@ describe('TagsController (e2e)', () => {
         expect(res.status).toEqual(400);
         expect(res.body).toEqual({
           statusCode: 400,
-          message: [
-            'each value in includes must be one of the following values: articles'
-          ],
+          message: ['each value in includes must be one of the following values: articles'],
           error: 'Bad Request'
         });
       });
@@ -740,9 +719,7 @@ describe('TagsController (e2e)', () => {
         expect(res.status).toEqual(400);
         expect(res.body).toEqual({
           statusCode: 400,
-          message: [
-            'filters.id.property foo should not exist'
-          ],
+          message: ['filters.id.property foo should not exist'],
           error: 'Bad Request'
         });
       });
@@ -893,9 +870,7 @@ describe('TagsController (e2e)', () => {
         expect(res.status).toEqual(400);
         expect(res.body).toEqual({
           statusCode: 400,
-          message: [
-            'filters.name.property foo should not exist'
-          ],
+          message: ['filters.name.property foo should not exist'],
           error: 'Bad Request'
         });
       });
@@ -998,9 +973,7 @@ describe('TagsController (e2e)', () => {
 
   describe('/api/tags/:id (GET)', () => {
     test('{"params":{"id":1},"query":{}} - 401 error, invalid token', async () => {
-      const res = await request(app.getHttpServer())
-        .get('/api/tags/1')
-        .query({});
+      const res = await request(app.getHttpServer()).get('/api/tags/1').query({});
       expect(res.status).toEqual(401);
       expect(res.body).toEqual({
         statusCode: 401,
@@ -1010,10 +983,7 @@ describe('TagsController (e2e)', () => {
     });
 
     test('{"params":{"id":"a"},"query":{}} - 400 error, id param must be a number', async () => {
-      const res = await request(app.getHttpServer())
-        .get('/api/tags/a')
-        .query({})
-        .set('Authorization', authorization);
+      const res = await request(app.getHttpServer()).get('/api/tags/a').query({}).set('Authorization', authorization);
       expect(res.status).toEqual(400);
       expect(res.body).toEqual({
         statusCode: 400,
@@ -1023,10 +993,7 @@ describe('TagsController (e2e)', () => {
     });
 
     test('{"params":{"id":100},"query":{}} - 404 error, entity not found', async () => {
-      const res = await request(app.getHttpServer())
-        .get('/api/tags/100')
-        .query({})
-        .set('Authorization', authorization);
+      const res = await request(app.getHttpServer()).get('/api/tags/100').query({}).set('Authorization', authorization);
       expect(res.status).toEqual(404);
       expect(res.body).toEqual({
         statusCode: 404,
@@ -1042,18 +1009,13 @@ describe('TagsController (e2e)', () => {
       expect(res.status).toEqual(400);
       expect(res.body).toEqual({
         statusCode: 400,
-        message: [
-          'property foo should not exist'
-        ],
+        message: ['property foo should not exist'],
         error: 'Bad Request'
       });
     });
 
     test('{"params":{"id":1},"query":{}} - success', async () => {
-      const res = await request(app.getHttpServer())
-        .get('/api/tags/1')
-        .query({})
-        .set('Authorization', authorization);
+      const res = await request(app.getHttpServer()).get('/api/tags/1').query({}).set('Authorization', authorization);
       expect(res.status).toEqual(200);
       expect(res.body).toMatchSchema(tagSchema);
       expect(res.body).toHaveProperty('id', 1);
@@ -1068,9 +1030,7 @@ describe('TagsController (e2e)', () => {
         expect(res.status).toEqual(400);
         expect(res.body).toEqual({
           statusCode: 400,
-          message: [
-            'each value in includes must be one of the following values: articles'
-          ],
+          message: ['each value in includes must be one of the following values: articles'],
           error: 'Bad Request'
         });
       });
@@ -1092,9 +1052,7 @@ describe('TagsController (e2e)', () => {
       const body = {
         name: 'beatae'
       };
-      const res = await request(app.getHttpServer())
-        .post('/api/tags')
-        .send(body);
+      const res = await request(app.getHttpServer()).post('/api/tags').send(body);
       expect(res.status).toEqual(401);
       expect(res.body).toEqual({
         statusCode: 401,
@@ -1107,10 +1065,7 @@ describe('TagsController (e2e)', () => {
       const body = {
         name: 'beatae'
       };
-      const res = await request(app.getHttpServer())
-        .post('/api/tags')
-        .send(body)
-        .set('Authorization', authorization);
+      const res = await request(app.getHttpServer()).post('/api/tags').send(body).set('Authorization', authorization);
       expect(res.status).toEqual(201);
       expect(res.body).toMatchSchema(tagSchema);
       expect(res.body).toMatchObject({
@@ -1125,9 +1080,7 @@ describe('TagsController (e2e)', () => {
       const body = {
         name: 'labore'
       };
-      const res = await request(app.getHttpServer())
-        .put('/api/tags/6')
-        .send(body);
+      const res = await request(app.getHttpServer()).put('/api/tags/6').send(body);
       expect(res.status).toEqual(401);
       expect(res.body).toEqual({
         statusCode: 401,
@@ -1140,10 +1093,7 @@ describe('TagsController (e2e)', () => {
       const body = {
         name: 'labore'
       };
-      const res = await request(app.getHttpServer())
-        .put('/api/tags/a')
-        .send(body)
-        .set('Authorization', authorization);
+      const res = await request(app.getHttpServer()).put('/api/tags/a').send(body).set('Authorization', authorization);
       expect(res.status).toEqual(400);
       expect(res.body).toEqual({
         statusCode: 400,
@@ -1171,10 +1121,7 @@ describe('TagsController (e2e)', () => {
       const body = {
         name: 'labore'
       };
-      const res = await request(app.getHttpServer())
-        .put('/api/tags/6')
-        .send(body)
-        .set('Authorization', authorization);
+      const res = await request(app.getHttpServer()).put('/api/tags/6').send(body).set('Authorization', authorization);
       expect(res.status).toEqual(200);
       expect(res.body).toMatchSchema(tagSchema);
       expect(res.body).toMatchObject({
@@ -1196,9 +1143,7 @@ describe('TagsController (e2e)', () => {
     });
 
     test('{"params":{"id":"a"}} - 400 error, id param must be a number', async () => {
-      const res = await request(app.getHttpServer())
-        .delete('/api/tags/a')
-        .set('Authorization', authorization);
+      const res = await request(app.getHttpServer()).delete('/api/tags/a').set('Authorization', authorization);
       expect(res.status).toEqual(400);
       expect(res.body).toEqual({
         statusCode: 400,
@@ -1208,9 +1153,7 @@ describe('TagsController (e2e)', () => {
     });
 
     test('{"params":{"id":100}} - 404 error, entity not found', async () => {
-      const res = await request(app.getHttpServer())
-        .delete('/api/tags/100')
-        .set('Authorization', authorization);
+      const res = await request(app.getHttpServer()).delete('/api/tags/100').set('Authorization', authorization);
       expect(res.status).toEqual(404);
       expect(res.body).toEqual({
         statusCode: 404,
@@ -1219,9 +1162,7 @@ describe('TagsController (e2e)', () => {
     });
 
     test('{"params":{"id":6}} - success', async () => {
-      const res = await request(app.getHttpServer())
-        .delete('/api/tags/6')
-        .set('Authorization', authorization);
+      const res = await request(app.getHttpServer()).delete('/api/tags/6').set('Authorization', authorization);
       expect(res.status).toEqual(204);
       expect(res.body).toEqual({});
     });

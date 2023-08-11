@@ -4,15 +4,16 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import * as validator from 'class-validator';
 import { Repository } from 'typeorm';
+
 import { FindResponse } from '../../common/interfaces';
 import { mockRepositoryFactory, MockType } from '../../common/test/helpers';
 import { User } from '../../entities/user.entity';
+
 import { UsersService } from './users.service';
 
 jest.spyOn(validator, 'validate').mockResolvedValue([]);
 
 describe('UsersService', () => {
-
   let testingModule: TestingModule;
   let service: UsersService;
   let mockRepository: MockType<Repository<User>>;
@@ -124,11 +125,17 @@ describe('UsersService', () => {
     };
 
     test('should return paginated users list', async () => {
-      mockRepository.find.mockReturnValue([ ...source.data ]);
+      mockRepository.find.mockReturnValue([...source.data]);
       mockRepository.countBy.mockReturnValue(source.pagination.rowCount);
       const result: FindResponse<User> = await service.find({});
       expect(result).toEqual(source);
-      expect(mockRepository.find).toHaveBeenCalledWith({ skip: 0, take: 10, where: {}, relations: [], order: { id: 'ASC' } });
+      expect(mockRepository.find).toHaveBeenCalledWith({
+        skip: 0,
+        take: 10,
+        where: {},
+        relations: [],
+        order: { id: 'ASC' }
+      });
       expect(mockRepository.countBy).toHaveBeenCalledWith({});
     });
   });
@@ -218,7 +225,7 @@ describe('UsersService', () => {
     ];
 
     test('should return all users list', async () => {
-      mockRepository.find.mockReturnValue([ ...source ]);
+      mockRepository.find.mockReturnValue([...source]);
       const result: User[] = await service.findAll({});
       expect(result).toEqual(source);
       expect(mockRepository.find).toHaveBeenCalledWith({ where: {}, relations: [], order: { id: 'ASC' } });
@@ -244,9 +251,7 @@ describe('UsersService', () => {
 
     test('should throw NotFoundException', async () => {
       mockRepository.findOne.mockReturnValue(null);
-      await expect(service.findOne(source.id, {}))
-        .rejects
-        .toThrow(NotFoundException);
+      await expect(service.findOne(source.id, {})).rejects.toThrow(NotFoundException);
       expect(mockRepository.findOne).toHaveBeenCalledWith({ where: { id: source.id }, relations: [] });
     });
   });
@@ -305,9 +310,7 @@ describe('UsersService', () => {
 
     test('should throw NotFoundException', async () => {
       mockRepository.findOneBy.mockReturnValue(null);
-      await expect(service.update(source.id, body))
-        .rejects
-        .toThrow(NotFoundException);
+      await expect(service.update(source.id, body)).rejects.toThrow(NotFoundException);
       expect(mockRepository.findOneBy).toHaveBeenCalledWith({ id: source.id });
     });
   });
@@ -332,9 +335,7 @@ describe('UsersService', () => {
 
     test('should throw NotFoundException', async () => {
       mockRepository.findOneBy.mockReturnValue(null);
-      await expect(service.remove(source.id))
-        .rejects
-        .toThrow(NotFoundException);
+      await expect(service.remove(source.id)).rejects.toThrow(NotFoundException);
       expect(mockRepository.findOneBy).toHaveBeenCalledWith({ id: source.id });
     });
   });

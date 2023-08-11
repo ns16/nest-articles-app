@@ -7,6 +7,7 @@ import {
   ValidatorConstraintInterface
 } from 'class-validator';
 import { isEmpty, isUndefined } from 'lodash';
+
 import AppDataSource from '../data-source';
 
 @ValidatorConstraint({ name: 'isUnique', async: true })

@@ -4,15 +4,16 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import * as validator from 'class-validator';
 import { Repository } from 'typeorm';
+
 import { FindResponse } from '../../common/interfaces';
 import { mockRepositoryFactory, MockType } from '../../common/test/helpers';
 import { Content } from '../../entities/content.entity';
+
 import { ContentsService } from './contents.service';
 
 jest.spyOn(validator, 'validate').mockResolvedValue([]);
 
 describe('ContentsService', () => {
-
   let testingModule: TestingModule;
   let service: ContentsService;
   let mockRepository: MockType<Repository<Content>>;
@@ -114,11 +115,17 @@ describe('ContentsService', () => {
     };
 
     test('should return paginated contents list', async () => {
-      mockRepository.find.mockReturnValue([ ...source.data ]);
+      mockRepository.find.mockReturnValue([...source.data]);
       mockRepository.countBy.mockReturnValue(source.pagination.rowCount);
       const result: FindResponse<Content> = await service.find({});
       expect(result).toEqual(source);
-      expect(mockRepository.find).toHaveBeenCalledWith({ skip: 0, take: 10, where: {}, relations: [], order: { id: 'ASC' } });
+      expect(mockRepository.find).toHaveBeenCalledWith({
+        skip: 0,
+        take: 10,
+        where: {},
+        relations: [],
+        order: { id: 'ASC' }
+      });
       expect(mockRepository.countBy).toHaveBeenCalledWith({});
     });
   });
@@ -198,7 +205,7 @@ describe('ContentsService', () => {
     ];
 
     test('should return all contents list', async () => {
-      mockRepository.find.mockReturnValue([ ...source ]);
+      mockRepository.find.mockReturnValue([...source]);
       const result: Content[] = await service.findAll({});
       expect(result).toEqual(source);
       expect(mockRepository.find).toHaveBeenCalledWith({ where: {}, relations: [], order: { id: 'ASC' } });
@@ -223,9 +230,7 @@ describe('ContentsService', () => {
 
     test('should throw NotFoundException', async () => {
       mockRepository.findOne.mockReturnValue(null);
-      await expect(service.findOne(source.id, {}))
-        .rejects
-        .toThrow(NotFoundException);
+      await expect(service.findOne(source.id, {})).rejects.toThrow(NotFoundException);
       expect(mockRepository.findOne).toHaveBeenCalledWith({ where: { id: source.id }, relations: [] });
     });
   });
@@ -240,7 +245,7 @@ describe('ContentsService', () => {
     };
     const body = {
       article_id: 21,
-      body: 'Rerum sunt provident velit voluptates a qui. Laborum beatae reprehenderit non suscipit. Adipisci natus dolorem autem.\nHic nostrum itaque aperiam odio aliquam eligendi magnam rem. Sit numquam voluptates dolorum quisquam sequi provident. Sed ad voluptatum ab ullam velit rerum itaque.\nNihil dolorum fugit vel officiis quidem saepe culpa. Voluptatum minus cupiditate in enim. Atque hic nobis vero mollitia aperiam architecto quos.',
+      body: 'Rerum sunt provident velit voluptates a qui. Laborum beatae reprehenderit non suscipit. Adipisci natus dolorem autem.\nHic nostrum itaque aperiam odio aliquam eligendi magnam rem. Sit numquam voluptates dolorum quisquam sequi provident. Sed ad voluptatum ab ullam velit rerum itaque.\nNihil dolorum fugit vel officiis quidem saepe culpa. Voluptatum minus cupiditate in enim. Atque hic nobis vero mollitia aperiam architecto quos.'
     };
 
     test('should return created content', async () => {
@@ -261,7 +266,7 @@ describe('ContentsService', () => {
     };
     const body = {
       article_id: 21,
-      body: 'Remur sunt provident velit voluptates a qui. Laborum beatae reprehenderit non suscipit. Adipisci natus dolorem autem.\nHic nostrum itaque aperiam odio aliquam eligendi magnam rem. Sit numquam voluptates dolorum quisquam sequi provident. Sed ad voluptatum ab ullam velit rerum itaque.\nNihil dolorum fugit vel officiis quidem saepe culpa. Voluptatum minus cupiditate in enim. Atque hic nobis vero mollitia aperiam architecto quos.',
+      body: 'Remur sunt provident velit voluptates a qui. Laborum beatae reprehenderit non suscipit. Adipisci natus dolorem autem.\nHic nostrum itaque aperiam odio aliquam eligendi magnam rem. Sit numquam voluptates dolorum quisquam sequi provident. Sed ad voluptatum ab ullam velit rerum itaque.\nNihil dolorum fugit vel officiis quidem saepe culpa. Voluptatum minus cupiditate in enim. Atque hic nobis vero mollitia aperiam architecto quos.'
     };
 
     test('should return updated content', async () => {
@@ -279,9 +284,7 @@ describe('ContentsService', () => {
 
     test('should throw NotFoundException', async () => {
       mockRepository.findOneBy.mockReturnValue(null);
-      await expect(service.update(source.id, body))
-        .rejects
-        .toThrow(NotFoundException);
+      await expect(service.update(source.id, body)).rejects.toThrow(NotFoundException);
       expect(mockRepository.findOneBy).toHaveBeenCalledWith({ id: source.id });
     });
   });
@@ -305,9 +308,7 @@ describe('ContentsService', () => {
 
     test('should throw NotFoundException', async () => {
       mockRepository.findOneBy.mockReturnValue(null);
-      await expect(service.remove(source.id))
-        .rejects
-        .toThrow(NotFoundException);
+      await expect(service.remove(source.id)).rejects.toThrow(NotFoundException);
       expect(mockRepository.findOneBy).toHaveBeenCalledWith({ id: source.id });
     });
   });

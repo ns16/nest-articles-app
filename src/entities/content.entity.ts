@@ -1,9 +1,11 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Column, Entity, JoinColumn, OneToOne } from 'typeorm';
-import { Article } from './article.entity';
-import { Base } from './base.entity';
+
 import { ExistsIn } from '../validators/exists-in';
 import { IsUnique } from '../validators/is-unique';
+
+import { Article } from './article.entity';
+import { Base } from './base.entity';
 
 @Entity('contents')
 export class Content extends Base {

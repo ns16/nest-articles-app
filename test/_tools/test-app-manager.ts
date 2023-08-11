@@ -2,11 +2,12 @@ import { ClassSerializerInterceptor, INestApplication, ValidationPipe } from '@n
 import { Reflector } from '@nestjs/core';
 import { Test, TestingModule } from '@nestjs/testing';
 import * as request from 'supertest';
+
 import { AppModule } from '../../src/app.module';
 
 export default class TestAppManager {
-
   static testingModule: TestingModule;
+
   static app: INestApplication;
 
   static async init(): Promise<INestApplication> {
@@ -17,10 +18,12 @@ export default class TestAppManager {
     }
     if (!TestAppManager.app) {
       const app = TestAppManager.testingModule.createNestApplication();
-      app.useGlobalPipes(new ValidationPipe({
-        whitelist: true,
-        forbidNonWhitelisted: true
-      }));
+      app.useGlobalPipes(
+        new ValidationPipe({
+          whitelist: true,
+          forbidNonWhitelisted: true
+        })
+      );
       app.useGlobalInterceptors(new ClassSerializerInterceptor(app.get(Reflector)));
       app.setGlobalPrefix('api');
       await app.init();
@@ -40,9 +43,7 @@ export default class TestAppManager {
       username: 'ns16',
       password: '123456'
     };
-    const res = await request(TestAppManager.app.getHttpServer())
-      .post('/api/auth/login')
-      .send(body);
+    const res = await request(TestAppManager.app.getHttpServer()).post('/api/auth/login').send(body);
     return res.header.token ? `Bearer ${res.header.token}` : null;
   }
 }

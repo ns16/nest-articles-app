@@ -4,15 +4,16 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import * as validator from 'class-validator';
 import { Repository } from 'typeorm';
+
 import { FindResponse } from '../../common/interfaces';
 import { mockRepositoryFactory, MockType } from '../../common/test/helpers';
 import { Article } from '../../entities/article.entity';
+
 import { ArticlesService } from './articles.service';
 
 jest.spyOn(validator, 'validate').mockResolvedValue([]);
 
 describe('ArticlesService', () => {
-
   let testingModule: TestingModule;
   let service: ArticlesService;
   let mockRepository: MockType<Repository<Article>>;
@@ -38,7 +39,8 @@ describe('ArticlesService', () => {
           id: 1,
           user_id: 1,
           title: 'quas repudiandae aspernatur',
-          description: 'Saepe dolorum nostrum praesentium enim. Aut reprehenderit corrupti similique cumque porro reiciendis. Vero facilis modi nam optio tempore reprehenderit enim.',
+          description:
+            'Saepe dolorum nostrum praesentium enim. Aut reprehenderit corrupti similique cumque porro reiciendis. Vero facilis modi nam optio tempore reprehenderit enim.',
           status: 'published',
           created_at: '2023-07-01T00:00:00.000Z',
           updated_at: '2023-07-01T00:00:00.000Z'
@@ -47,7 +49,8 @@ describe('ArticlesService', () => {
           id: 2,
           user_id: 1,
           title: 'optio tempora quo',
-          description: 'Eos sapiente dolor voluptas deleniti. Magnam eum minima vel repellendus totam quasi qui soluta corporis. Nobis ipsam quae labore illo reiciendis explicabo.',
+          description:
+            'Eos sapiente dolor voluptas deleniti. Magnam eum minima vel repellendus totam quasi qui soluta corporis. Nobis ipsam quae labore illo reiciendis explicabo.',
           status: 'published',
           created_at: '2023-07-01T00:00:00.000Z',
           updated_at: '2023-07-01T00:00:00.000Z'
@@ -56,7 +59,8 @@ describe('ArticlesService', () => {
           id: 3,
           user_id: 2,
           title: 'dolorem ad at',
-          description: 'Beatae impedit cumque a porro pariatur explicabo. Consequatur saepe est aut voluptatum veniam reiciendis quod. Animi repellendus totam perferendis nesciunt libero a autem laborum.',
+          description:
+            'Beatae impedit cumque a porro pariatur explicabo. Consequatur saepe est aut voluptatum veniam reiciendis quod. Animi repellendus totam perferendis nesciunt libero a autem laborum.',
           status: 'published',
           created_at: '2023-07-01T00:00:00.000Z',
           updated_at: '2023-07-01T00:00:00.000Z'
@@ -65,7 +69,8 @@ describe('ArticlesService', () => {
           id: 4,
           user_id: 2,
           title: 'labore optio veritatis',
-          description: 'Distinctio incidunt nisi ex impedit dolorem tempore eius. Ipsam nobis ex expedita. Possimus reprehenderit voluptates ipsa deleniti earum quasi saepe aperiam dolor.',
+          description:
+            'Distinctio incidunt nisi ex impedit dolorem tempore eius. Ipsam nobis ex expedita. Possimus reprehenderit voluptates ipsa deleniti earum quasi saepe aperiam dolor.',
           status: 'published',
           created_at: '2023-07-01T00:00:00.000Z',
           updated_at: '2023-07-01T00:00:00.000Z'
@@ -74,7 +79,8 @@ describe('ArticlesService', () => {
           id: 5,
           user_id: 3,
           title: 'debitis aliquam quaerat',
-          description: 'Quos deleniti nulla iure dolorem mollitia. Ad corporis saepe aperiam illo illum voluptatibus commodi deserunt. Ab distinctio porro nisi.',
+          description:
+            'Quos deleniti nulla iure dolorem mollitia. Ad corporis saepe aperiam illo illum voluptatibus commodi deserunt. Ab distinctio porro nisi.',
           status: 'published',
           created_at: '2023-07-01T00:00:00.000Z',
           updated_at: '2023-07-01T00:00:00.000Z'
@@ -83,7 +89,8 @@ describe('ArticlesService', () => {
           id: 6,
           user_id: 3,
           title: 'occaecati repellendus voluptates',
-          description: 'Qui ullam ad perferendis magni odio ratione unde. Nisi molestiae non itaque nulla nulla amet. Nihil blanditiis iusto ut consequuntur dolore consequuntur magni adipisci.',
+          description:
+            'Qui ullam ad perferendis magni odio ratione unde. Nisi molestiae non itaque nulla nulla amet. Nihil blanditiis iusto ut consequuntur dolore consequuntur magni adipisci.',
           status: 'published',
           created_at: '2023-07-01T00:00:00.000Z',
           updated_at: '2023-07-01T00:00:00.000Z'
@@ -92,7 +99,8 @@ describe('ArticlesService', () => {
           id: 7,
           user_id: 4,
           title: 'suscipit velit odio',
-          description: 'Incidunt nam dolor dolor. Iure repellendus est labore at pariatur. Repellendus vel reiciendis accusantium non.',
+          description:
+            'Incidunt nam dolor dolor. Iure repellendus est labore at pariatur. Repellendus vel reiciendis accusantium non.',
           status: 'published',
           created_at: '2023-07-01T00:00:00.000Z',
           updated_at: '2023-07-01T00:00:00.000Z'
@@ -110,7 +118,8 @@ describe('ArticlesService', () => {
           id: 9,
           user_id: 5,
           title: 'fuga non ullam',
-          description: 'Minus odio quasi adipisci maxime numquam architecto ducimus est. Delectus atque itaque enim. Maxime autem molestiae eum.',
+          description:
+            'Minus odio quasi adipisci maxime numquam architecto ducimus est. Delectus atque itaque enim. Maxime autem molestiae eum.',
           status: 'published',
           created_at: '2023-07-01T00:00:00.000Z',
           updated_at: '2023-07-01T00:00:00.000Z'
@@ -134,11 +143,17 @@ describe('ArticlesService', () => {
     };
 
     test('should return paginated articles list', async () => {
-      mockRepository.find.mockReturnValue([ ...source.data ]);
+      mockRepository.find.mockReturnValue([...source.data]);
       mockRepository.countBy.mockReturnValue(source.pagination.rowCount);
       const result: FindResponse<Article> = await service.find({});
       expect(result).toEqual(source);
-      expect(mockRepository.find).toHaveBeenCalledWith({ skip: 0, take: 10, where: {}, relations: [], order: { id: 'ASC' } });
+      expect(mockRepository.find).toHaveBeenCalledWith({
+        skip: 0,
+        take: 10,
+        where: {},
+        relations: [],
+        order: { id: 'ASC' }
+      });
       expect(mockRepository.countBy).toHaveBeenCalledWith({});
     });
   });
@@ -149,7 +164,8 @@ describe('ArticlesService', () => {
         id: 1,
         user_id: 1,
         title: 'quas repudiandae aspernatur',
-        description: 'Saepe dolorum nostrum praesentium enim. Aut reprehenderit corrupti similique cumque porro reiciendis. Vero facilis modi nam optio tempore reprehenderit enim.',
+        description:
+          'Saepe dolorum nostrum praesentium enim. Aut reprehenderit corrupti similique cumque porro reiciendis. Vero facilis modi nam optio tempore reprehenderit enim.',
         status: 'published',
         created_at: '2023-07-01T00:00:00.000Z',
         updated_at: '2023-07-01T00:00:00.000Z'
@@ -158,7 +174,8 @@ describe('ArticlesService', () => {
         id: 2,
         user_id: 1,
         title: 'optio tempora quo',
-        description: 'Eos sapiente dolor voluptas deleniti. Magnam eum minima vel repellendus totam quasi qui soluta corporis. Nobis ipsam quae labore illo reiciendis explicabo.',
+        description:
+          'Eos sapiente dolor voluptas deleniti. Magnam eum minima vel repellendus totam quasi qui soluta corporis. Nobis ipsam quae labore illo reiciendis explicabo.',
         status: 'published',
         created_at: '2023-07-01T00:00:00.000Z',
         updated_at: '2023-07-01T00:00:00.000Z'
@@ -167,7 +184,8 @@ describe('ArticlesService', () => {
         id: 3,
         user_id: 2,
         title: 'dolorem ad at',
-        description: 'Beatae impedit cumque a porro pariatur explicabo. Consequatur saepe est aut voluptatum veniam reiciendis quod. Animi repellendus totam perferendis nesciunt libero a autem laborum.',
+        description:
+          'Beatae impedit cumque a porro pariatur explicabo. Consequatur saepe est aut voluptatum veniam reiciendis quod. Animi repellendus totam perferendis nesciunt libero a autem laborum.',
         status: 'published',
         created_at: '2023-07-01T00:00:00.000Z',
         updated_at: '2023-07-01T00:00:00.000Z'
@@ -176,7 +194,8 @@ describe('ArticlesService', () => {
         id: 4,
         user_id: 2,
         title: 'labore optio veritatis',
-        description: 'Distinctio incidunt nisi ex impedit dolorem tempore eius. Ipsam nobis ex expedita. Possimus reprehenderit voluptates ipsa deleniti earum quasi saepe aperiam dolor.',
+        description:
+          'Distinctio incidunt nisi ex impedit dolorem tempore eius. Ipsam nobis ex expedita. Possimus reprehenderit voluptates ipsa deleniti earum quasi saepe aperiam dolor.',
         status: 'published',
         created_at: '2023-07-01T00:00:00.000Z',
         updated_at: '2023-07-01T00:00:00.000Z'
@@ -185,7 +204,8 @@ describe('ArticlesService', () => {
         id: 5,
         user_id: 3,
         title: 'debitis aliquam quaerat',
-        description: 'Quos deleniti nulla iure dolorem mollitia. Ad corporis saepe aperiam illo illum voluptatibus commodi deserunt. Ab distinctio porro nisi.',
+        description:
+          'Quos deleniti nulla iure dolorem mollitia. Ad corporis saepe aperiam illo illum voluptatibus commodi deserunt. Ab distinctio porro nisi.',
         status: 'published',
         created_at: '2023-07-01T00:00:00.000Z',
         updated_at: '2023-07-01T00:00:00.000Z'
@@ -194,7 +214,8 @@ describe('ArticlesService', () => {
         id: 6,
         user_id: 3,
         title: 'occaecati repellendus voluptates',
-        description: 'Qui ullam ad perferendis magni odio ratione unde. Nisi molestiae non itaque nulla nulla amet. Nihil blanditiis iusto ut consequuntur dolore consequuntur magni adipisci.',
+        description:
+          'Qui ullam ad perferendis magni odio ratione unde. Nisi molestiae non itaque nulla nulla amet. Nihil blanditiis iusto ut consequuntur dolore consequuntur magni adipisci.',
         status: 'published',
         created_at: '2023-07-01T00:00:00.000Z',
         updated_at: '2023-07-01T00:00:00.000Z'
@@ -203,7 +224,8 @@ describe('ArticlesService', () => {
         id: 7,
         user_id: 4,
         title: 'suscipit velit odio',
-        description: 'Incidunt nam dolor dolor. Iure repellendus est labore at pariatur. Repellendus vel reiciendis accusantium non.',
+        description:
+          'Incidunt nam dolor dolor. Iure repellendus est labore at pariatur. Repellendus vel reiciendis accusantium non.',
         status: 'published',
         created_at: '2023-07-01T00:00:00.000Z',
         updated_at: '2023-07-01T00:00:00.000Z'
@@ -221,7 +243,8 @@ describe('ArticlesService', () => {
         id: 9,
         user_id: 5,
         title: 'fuga non ullam',
-        description: 'Minus odio quasi adipisci maxime numquam architecto ducimus est. Delectus atque itaque enim. Maxime autem molestiae eum.',
+        description:
+          'Minus odio quasi adipisci maxime numquam architecto ducimus est. Delectus atque itaque enim. Maxime autem molestiae eum.',
         status: 'published',
         created_at: '2023-07-01T00:00:00.000Z',
         updated_at: '2023-07-01T00:00:00.000Z'
@@ -238,7 +261,7 @@ describe('ArticlesService', () => {
     ];
 
     test('should return all articles list', async () => {
-      mockRepository.find.mockReturnValue([ ...source ]);
+      mockRepository.find.mockReturnValue([...source]);
       const result: Article[] = await service.findAll({});
       expect(result).toEqual(source);
       expect(mockRepository.find).toHaveBeenCalledWith({ where: {}, relations: [], order: { id: 'ASC' } });
@@ -250,7 +273,8 @@ describe('ArticlesService', () => {
       id: 1,
       user_id: 1,
       title: 'quas repudiandae aspernatur',
-      description: 'Saepe dolorum nostrum praesentium enim. Aut reprehenderit corrupti similique cumque porro reiciendis. Vero facilis modi nam optio tempore reprehenderit enim.',
+      description:
+        'Saepe dolorum nostrum praesentium enim. Aut reprehenderit corrupti similique cumque porro reiciendis. Vero facilis modi nam optio tempore reprehenderit enim.',
       status: 'published',
       created_at: '2023-07-01T00:00:00.000Z',
       updated_at: '2023-07-01T00:00:00.000Z'
@@ -265,9 +289,7 @@ describe('ArticlesService', () => {
 
     test('should throw NotFoundException', async () => {
       mockRepository.findOne.mockReturnValue(null);
-      await expect(service.findOne(source.id, {}))
-        .rejects
-        .toThrow(NotFoundException);
+      await expect(service.findOne(source.id, {})).rejects.toThrow(NotFoundException);
       expect(mockRepository.findOne).toHaveBeenCalledWith({ where: { id: source.id }, relations: [] });
     });
   });
@@ -277,7 +299,8 @@ describe('ArticlesService', () => {
       id: 21,
       user_id: 1,
       title: 'sint in modi',
-      description: 'Molestiae excepturi commodi nam nobis qui. Laboriosam ab tenetur debitis amet corporis id debitis. Voluptas totam ullam minus veniam dolor deserunt tempore.',
+      description:
+        'Molestiae excepturi commodi nam nobis qui. Laboriosam ab tenetur debitis amet corporis id debitis. Voluptas totam ullam minus veniam dolor deserunt tempore.',
       status: 'published',
       created_at: '2023-07-01T00:00:00.000Z',
       updated_at: '2023-07-01T00:00:00.000Z'
@@ -285,7 +308,8 @@ describe('ArticlesService', () => {
     const body = {
       user_id: 1,
       title: 'sint in modi',
-      description: 'Molestiae excepturi commodi nam nobis qui. Laboriosam ab tenetur debitis amet corporis id debitis. Voluptas totam ullam minus veniam dolor deserunt tempore.',
+      description:
+        'Molestiae excepturi commodi nam nobis qui. Laboriosam ab tenetur debitis amet corporis id debitis. Voluptas totam ullam minus veniam dolor deserunt tempore.',
       status: 'published'
     };
 
@@ -302,7 +326,8 @@ describe('ArticlesService', () => {
       id: 21,
       user_id: 1,
       title: 'sint in modi',
-      description: 'Molestiae excepturi commodi nam nobis qui. Laboriosam ab tenetur debitis amet corporis id debitis. Voluptas totam ullam minus veniam dolor deserunt tempore.',
+      description:
+        'Molestiae excepturi commodi nam nobis qui. Laboriosam ab tenetur debitis amet corporis id debitis. Voluptas totam ullam minus veniam dolor deserunt tempore.',
       status: 'published',
       created_at: '2023-07-01T00:00:00.000Z',
       updated_at: '2023-07-01T00:00:00.000Z'
@@ -310,7 +335,8 @@ describe('ArticlesService', () => {
     const body = {
       user_id: 1,
       title: 'sint in domi',
-      description: 'Molestiae excepturi commodi nam nobis qui. Laboriosam ab tenetur debitis amet corporis id debitis. Voluptas totam ullam minus veniam dolor deserunt tempore.',
+      description:
+        'Molestiae excepturi commodi nam nobis qui. Laboriosam ab tenetur debitis amet corporis id debitis. Voluptas totam ullam minus veniam dolor deserunt tempore.',
       status: 'published'
     };
 
@@ -329,9 +355,7 @@ describe('ArticlesService', () => {
 
     test('should throw NotFoundException', async () => {
       mockRepository.findOneBy.mockReturnValue(null);
-      await expect(service.update(source.id, body))
-        .rejects
-        .toThrow(NotFoundException);
+      await expect(service.update(source.id, body)).rejects.toThrow(NotFoundException);
       expect(mockRepository.findOneBy).toHaveBeenCalledWith({ id: source.id });
     });
   });
@@ -341,7 +365,8 @@ describe('ArticlesService', () => {
       id: 21,
       user_id: 1,
       title: 'sint in modi',
-      description: 'Molestiae excepturi commodi nam nobis qui. Laboriosam ab tenetur debitis amet corporis id debitis. Voluptas totam ullam minus veniam dolor deserunt tempore.',
+      description:
+        'Molestiae excepturi commodi nam nobis qui. Laboriosam ab tenetur debitis amet corporis id debitis. Voluptas totam ullam minus veniam dolor deserunt tempore.',
       status: 'published',
       created_at: '2023-07-01T00:00:00.000Z',
       updated_at: '2023-07-01T00:00:00.000Z'
@@ -357,9 +382,7 @@ describe('ArticlesService', () => {
 
     test('should throw NotFoundException', async () => {
       mockRepository.findOneBy.mockReturnValue(null);
-      await expect(service.remove(source.id))
-        .rejects
-        .toThrow(NotFoundException);
+      await expect(service.remove(source.id)).rejects.toThrow(NotFoundException);
       expect(mockRepository.findOneBy).toHaveBeenCalledWith({ id: source.id });
     });
   });

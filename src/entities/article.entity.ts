@@ -1,10 +1,12 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Column, Entity, JoinColumn, JoinTable, ManyToMany, ManyToOne, OneToOne } from 'typeorm';
+
+import { ExistsIn } from '../validators/exists-in';
+
 import { Base } from './base.entity';
 import { Content } from './content.entity';
 import { Tag } from './tag.entity';
 import { User } from './user.entity';
-import { ExistsIn } from '../validators/exists-in';
 
 @Entity('articles')
 export class Article extends Base {

@@ -5,15 +5,20 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import * as bcrypt from 'bcrypt';
 import { Repository } from 'typeorm';
+
 import { mockRepositoryFactory, MockType } from '../../common/test/helpers';
 import { Admin } from '../../entities/admin.entity';
-import { LoginResponse } from './interfaces/login-response';
-import { AuthService } from './auth.service';
 
-jest.spyOn(JwtService.prototype, 'signAsync').mockResolvedValue('eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsInVzZXJuYW1lIjoibnMxNiIsImlhdCI6MTY4OTg2MzMzNX0.EnZsR-3ipVFfaFkOOzK-ZDrNHfHK_FwNu1zWvLvYv7c');
+import { AuthService } from './auth.service';
+import { LoginResponse } from './interfaces/login-response';
+
+jest
+  .spyOn(JwtService.prototype, 'signAsync')
+  .mockResolvedValue(
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsInVzZXJuYW1lIjoibnMxNiIsImlhdCI6MTY4OTg2MzMzNX0.EnZsR-3ipVFfaFkOOzK-ZDrNHfHK_FwNu1zWvLvYv7c'
+  );
 
 describe('AuthService', () => {
-
   let testingModule: TestingModule;
   let service: AuthService;
   let mockRepository: MockType<Repository<Admin>>;
@@ -59,18 +64,14 @@ describe('AuthService', () => {
     test('should throw UnauthorizedException (username is invalid)', async () => {
       mockRepository.findOneBy.mockReturnValue(null);
       jest.spyOn(bcrypt, 'compare').mockResolvedValue(true as never);
-      await expect(service.login(body))
-        .rejects
-        .toThrow(UnauthorizedException);
+      await expect(service.login(body)).rejects.toThrow(UnauthorizedException);
       expect(mockRepository.findOneBy).toHaveBeenCalledWith({ username: source.username });
     });
 
     test('should throw UnauthorizedException (password is invalid)', async () => {
       mockRepository.findOneBy.mockReturnValue({ ...source });
       jest.spyOn(bcrypt, 'compare').mockResolvedValue(false as never);
-      await expect(service.login(body))
-        .rejects
-        .toThrow(UnauthorizedException);
+      await expect(service.login(body)).rejects.toThrow(UnauthorizedException);
       expect(mockRepository.findOneBy).toHaveBeenCalledWith({ username: source.username });
     });
   });

@@ -1,8 +1,10 @@
 import { Body, Controller, Delete, HttpCode, HttpStatus, Post } from '@nestjs/common';
 import { ApiBadRequestResponse, ApiBearerAuth, ApiOperation, ApiTags, ApiUnauthorizedResponse } from '@nestjs/swagger';
+
 import { Article } from '../../entities/article.entity';
-import { CreateOrRemoveArticleTagDto } from './dto/create-or-remove-article-tag.dto';
+
 import { ArticlesTagsService } from './articles-tags.service';
+import { CreateOrRemoveArticleTagDto } from './dto/create-or-remove-article-tag.dto';
 
 @ApiTags('Articles-Tags')
 @Controller('articles-tags')

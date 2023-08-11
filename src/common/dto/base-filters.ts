@@ -1,5 +1,6 @@
 import { Type } from 'class-transformer';
 import { IsOptional, ValidateNested } from 'class-validator';
+
 import { DateFilter, NumberFilter } from '../filters';
 
 export class BaseFilters {

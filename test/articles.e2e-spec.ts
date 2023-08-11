@@ -1,8 +1,10 @@
 import { INestApplication } from '@nestjs/common';
 import { matchers } from 'jest-json-schema';
 import * as request from 'supertest';
+
 import MigrationsManager from '../src/common/migration/migrations-manager';
 import SeedsManager from '../src/common/seed/seeds-manager';
+
 import {
   articleSchema,
   articlesListSchema,
@@ -19,7 +21,6 @@ import TestAppManager from './_tools/test-app-manager';
 expect.extend(matchers);
 
 describe('ArticlesController (e2e)', () => {
-
   let app: INestApplication;
   let authorization: string;
 
@@ -32,9 +33,7 @@ describe('ArticlesController (e2e)', () => {
 
   describe('/api/articles (GET)', () => {
     test('{"query":{}} - 401 error, invalid token', async () => {
-      const res = await request(app.getHttpServer())
-        .get('/api/articles')
-        .query({});
+      const res = await request(app.getHttpServer()).get('/api/articles').query({});
       expect(res.status).toEqual(401);
       expect(res.body).toEqual({
         statusCode: 401,
@@ -51,18 +50,13 @@ describe('ArticlesController (e2e)', () => {
       expect(res.status).toEqual(400);
       expect(res.body).toEqual({
         statusCode: 400,
-        message: [
-          'property foo should not exist'
-        ],
+        message: ['property foo should not exist'],
         error: 'Bad Request'
       });
     });
 
     test('{"query":{}} - success', async () => {
-      const res = await request(app.getHttpServer())
-        .get('/api/articles')
-        .query({})
-        .set('Authorization', authorization);
+      const res = await request(app.getHttpServer()).get('/api/articles').query({}).set('Authorization', authorization);
       expect(res.status).toEqual(200);
       expect(res.body.data).toMatchSchema(articlesListSchema);
       expect(res.body.data).toHaveLength(10);
@@ -245,9 +239,7 @@ describe('ArticlesController (e2e)', () => {
         expect(res.status).toEqual(400);
         expect(res.body).toEqual({
           statusCode: 400,
-          message: [
-            'each value in includes must be one of the following values: user, content, tags'
-          ],
+          message: ['each value in includes must be one of the following values: user, content, tags'],
           error: 'Bad Request'
         });
       });
@@ -313,9 +305,7 @@ describe('ArticlesController (e2e)', () => {
         expect(res.status).toEqual(400);
         expect(res.body).toEqual({
           statusCode: 400,
-          message: [
-            'filters.id.property foo should not exist'
-          ],
+          message: ['filters.id.property foo should not exist'],
           error: 'Bad Request'
         });
       });
@@ -550,9 +540,7 @@ describe('ArticlesController (e2e)', () => {
         expect(res.status).toEqual(400);
         expect(res.body).toEqual({
           statusCode: 400,
-          message: [
-            'filters.title.property foo should not exist'
-          ],
+          message: ['filters.title.property foo should not exist'],
           error: 'Bad Request'
         });
       });
@@ -711,9 +699,7 @@ describe('ArticlesController (e2e)', () => {
 
   describe('/api/articles/all (GET)', () => {
     test('{"query":{}} - 401 error, invalid token', async () => {
-      const res = await request(app.getHttpServer())
-        .get('/api/articles/all')
-        .query({});
+      const res = await request(app.getHttpServer()).get('/api/articles/all').query({});
       expect(res.status).toEqual(401);
       expect(res.body).toEqual({
         statusCode: 401,
@@ -730,9 +716,7 @@ describe('ArticlesController (e2e)', () => {
       expect(res.status).toEqual(400);
       expect(res.body).toEqual({
         statusCode: 400,
-        message: [
-          'property foo should not exist'
-        ],
+        message: ['property foo should not exist'],
         error: 'Bad Request'
       });
     });
@@ -802,9 +786,7 @@ describe('ArticlesController (e2e)', () => {
         expect(res.status).toEqual(400);
         expect(res.body).toEqual({
           statusCode: 400,
-          message: [
-            'each value in includes must be one of the following values: user, content, tags'
-          ],
+          message: ['each value in includes must be one of the following values: user, content, tags'],
           error: 'Bad Request'
         });
       });
@@ -849,9 +831,7 @@ describe('ArticlesController (e2e)', () => {
         expect(res.status).toEqual(400);
         expect(res.body).toEqual({
           statusCode: 400,
-          message: [
-            'filters.id.property foo should not exist'
-          ],
+          message: ['filters.id.property foo should not exist'],
           error: 'Bad Request'
         });
       });
@@ -1002,9 +982,7 @@ describe('ArticlesController (e2e)', () => {
         expect(res.status).toEqual(400);
         expect(res.body).toEqual({
           statusCode: 400,
-          message: [
-            'filters.title.property foo should not exist'
-          ],
+          message: ['filters.title.property foo should not exist'],
           error: 'Bad Request'
         });
       });
@@ -1107,9 +1085,7 @@ describe('ArticlesController (e2e)', () => {
 
   describe('/api/articles/:id (GET)', () => {
     test('{"params":{"id":1},"query":{}} - 401 error, invalid token', async () => {
-      const res = await request(app.getHttpServer())
-        .get('/api/articles/1')
-        .query({});
+      const res = await request(app.getHttpServer()).get('/api/articles/1').query({});
       expect(res.status).toEqual(401);
       expect(res.body).toEqual({
         statusCode: 401,
@@ -1151,9 +1127,7 @@ describe('ArticlesController (e2e)', () => {
       expect(res.status).toEqual(400);
       expect(res.body).toEqual({
         statusCode: 400,
-        message: [
-          'property foo should not exist'
-        ],
+        message: ['property foo should not exist'],
         error: 'Bad Request'
       });
     });
@@ -1177,9 +1151,7 @@ describe('ArticlesController (e2e)', () => {
         expect(res.status).toEqual(400);
         expect(res.body).toEqual({
           statusCode: 400,
-          message: [
-            'each value in includes must be one of the following values: user, content, tags'
-          ],
+          message: ['each value in includes must be one of the following values: user, content, tags'],
           error: 'Bad Request'
         });
       });
@@ -1221,12 +1193,11 @@ describe('ArticlesController (e2e)', () => {
       const body = {
         user_id: 1,
         title: 'illum beatae soluta',
-        description: 'Vero nihil eius quidem. Quaerat ipsum rem animi fugit pariatur deleniti. Neque unde ad quam illo facere.',
+        description:
+          'Vero nihil eius quidem. Quaerat ipsum rem animi fugit pariatur deleniti. Neque unde ad quam illo facere.',
         status: 'published'
       };
-      const res = await request(app.getHttpServer())
-        .post('/api/articles')
-        .send(body);
+      const res = await request(app.getHttpServer()).post('/api/articles').send(body);
       expect(res.status).toEqual(401);
       expect(res.body).toEqual({
         statusCode: 401,
@@ -1239,7 +1210,8 @@ describe('ArticlesController (e2e)', () => {
       const body = {
         user_id: 100,
         title: 'illum beatae soluta',
-        description: 'Vero nihil eius quidem. Quaerat ipsum rem animi fugit pariatur deleniti. Neque unde ad quam illo facere.',
+        description:
+          'Vero nihil eius quidem. Quaerat ipsum rem animi fugit pariatur deleniti. Neque unde ad quam illo facere.',
         status: 'published'
       };
       const res = await request(app.getHttpServer())
@@ -1249,9 +1221,7 @@ describe('ArticlesController (e2e)', () => {
       expect(res.status).toEqual(400);
       expect(res.body).toEqual({
         statusCode: 400,
-        message: [
-          'user_id field must contain id of existing User'
-        ],
+        message: ['user_id field must contain id of existing User'],
         error: 'Bad Request'
       });
     });
@@ -1260,7 +1230,8 @@ describe('ArticlesController (e2e)', () => {
       const body = {
         user_id: 1,
         title: 'illum beatae soluta',
-        description: 'Vero nihil eius quidem. Quaerat ipsum rem animi fugit pariatur deleniti. Neque unde ad quam illo facere.',
+        description:
+          'Vero nihil eius quidem. Quaerat ipsum rem animi fugit pariatur deleniti. Neque unde ad quam illo facere.',
         status: 'published'
       };
       const res = await request(app.getHttpServer())
@@ -1273,7 +1244,8 @@ describe('ArticlesController (e2e)', () => {
         id: 21,
         user_id: 1,
         title: 'illum beatae soluta',
-        description: 'Vero nihil eius quidem. Quaerat ipsum rem animi fugit pariatur deleniti. Neque unde ad quam illo facere.',
+        description:
+          'Vero nihil eius quidem. Quaerat ipsum rem animi fugit pariatur deleniti. Neque unde ad quam illo facere.',
         status: 'published'
       });
     });
@@ -1284,12 +1256,11 @@ describe('ArticlesController (e2e)', () => {
       const body = {
         user_id: 1,
         title: 'illum beatae cumque',
-        description: 'Vero nihil eius quidem. Quaerat ipsum rem animi fugit pariatur deleniti. Neque unde ad quam illo facere.',
+        description:
+          'Vero nihil eius quidem. Quaerat ipsum rem animi fugit pariatur deleniti. Neque unde ad quam illo facere.',
         status: 'published'
       };
-      const res = await request(app.getHttpServer())
-        .put('/api/articles/21')
-        .send(body);
+      const res = await request(app.getHttpServer()).put('/api/articles/21').send(body);
       expect(res.status).toEqual(401);
       expect(res.body).toEqual({
         statusCode: 401,
@@ -1302,7 +1273,8 @@ describe('ArticlesController (e2e)', () => {
       const body = {
         user_id: 1,
         title: 'illum beatae cumque',
-        description: 'Vero nihil eius quidem. Quaerat ipsum rem animi fugit pariatur deleniti. Neque unde ad quam illo facere.',
+        description:
+          'Vero nihil eius quidem. Quaerat ipsum rem animi fugit pariatur deleniti. Neque unde ad quam illo facere.',
         status: 'published'
       };
       const res = await request(app.getHttpServer())
@@ -1321,7 +1293,8 @@ describe('ArticlesController (e2e)', () => {
       const body = {
         user_id: 1,
         title: 'illum beatae cumque',
-        description: 'Vero nihil eius quidem. Quaerat ipsum rem animi fugit pariatur deleniti. Neque unde ad quam illo facere.',
+        description:
+          'Vero nihil eius quidem. Quaerat ipsum rem animi fugit pariatur deleniti. Neque unde ad quam illo facere.',
         status: 'published'
       };
       const res = await request(app.getHttpServer())
@@ -1339,7 +1312,8 @@ describe('ArticlesController (e2e)', () => {
       const body = {
         user_id: 100,
         title: 'illum beatae cumque',
-        description: 'Vero nihil eius quidem. Quaerat ipsum rem animi fugit pariatur deleniti. Neque unde ad quam illo facere.',
+        description:
+          'Vero nihil eius quidem. Quaerat ipsum rem animi fugit pariatur deleniti. Neque unde ad quam illo facere.',
         status: 'published'
       };
       const res = await request(app.getHttpServer())
@@ -1349,9 +1323,7 @@ describe('ArticlesController (e2e)', () => {
       expect(res.status).toEqual(400);
       expect(res.body).toEqual({
         statusCode: 400,
-        message: [
-          'user_id field must contain id of existing User'
-        ],
+        message: ['user_id field must contain id of existing User'],
         error: 'Bad Request'
       });
     });
@@ -1360,7 +1332,8 @@ describe('ArticlesController (e2e)', () => {
       const body = {
         user_id: 1,
         title: 'illum beatae cumque',
-        description: 'Vero nihil eius quidem. Quaerat ipsum rem animi fugit pariatur deleniti. Neque unde ad quam illo facere.',
+        description:
+          'Vero nihil eius quidem. Quaerat ipsum rem animi fugit pariatur deleniti. Neque unde ad quam illo facere.',
         status: 'published'
       };
       const res = await request(app.getHttpServer())
@@ -1373,7 +1346,8 @@ describe('ArticlesController (e2e)', () => {
         id: 21,
         user_id: 1,
         title: 'illum beatae cumque',
-        description: 'Vero nihil eius quidem. Quaerat ipsum rem animi fugit pariatur deleniti. Neque unde ad quam illo facere.',
+        description:
+          'Vero nihil eius quidem. Quaerat ipsum rem animi fugit pariatur deleniti. Neque unde ad quam illo facere.',
         status: 'published'
       });
     });
@@ -1391,9 +1365,7 @@ describe('ArticlesController (e2e)', () => {
     });
 
     test('{"params":{"id":"a"}} - 400 error, id param must be a number', async () => {
-      const res = await request(app.getHttpServer())
-        .delete('/api/articles/a')
-        .set('Authorization', authorization);
+      const res = await request(app.getHttpServer()).delete('/api/articles/a').set('Authorization', authorization);
       expect(res.status).toEqual(400);
       expect(res.body).toEqual({
         statusCode: 400,
@@ -1403,9 +1375,7 @@ describe('ArticlesController (e2e)', () => {
     });
 
     test('{"params":{"id":100}} - 404 error, entity not found', async () => {
-      const res = await request(app.getHttpServer())
-        .delete('/api/articles/100')
-        .set('Authorization', authorization);
+      const res = await request(app.getHttpServer()).delete('/api/articles/100').set('Authorization', authorization);
       expect(res.status).toEqual(404);
       expect(res.body).toEqual({
         statusCode: 404,
@@ -1414,9 +1384,7 @@ describe('ArticlesController (e2e)', () => {
     });
 
     test('{"params":{"id":21}} - success', async () => {
-      const res = await request(app.getHttpServer())
-        .delete('/api/articles/21')
-        .set('Authorization', authorization);
+      const res = await request(app.getHttpServer()).delete('/api/articles/21').set('Authorization', authorization);
       expect(res.status).toEqual(204);
       expect(res.body).toEqual({});
     });

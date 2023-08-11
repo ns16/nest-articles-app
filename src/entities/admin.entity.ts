@@ -1,8 +1,10 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Exclude } from 'class-transformer';
 import { Column, Entity } from 'typeorm';
-import { Base } from './base.entity';
+
 import { IsUnique } from '../validators/is-unique';
+
+import { Base } from './base.entity';
 
 @Entity('admins')
 export class Admin extends Base {

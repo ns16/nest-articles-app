@@ -1,16 +1,17 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
+
+import { AppController } from './app.controller';
+import { AppService } from './app.service';
 import { config } from './config';
 import { AdminsModule } from './modules/admins/admins.module';
-import { AuthModule } from './modules/auth/auth.module';
 import { ArticlesModule } from './modules/articles/articles.module';
 import { ArticlesTagsModule } from './modules/articles-tags/articles-tags.module';
+import { AuthModule } from './modules/auth/auth.module';
 import { ContentsModule } from './modules/contents/contents.module';
 import { TagsModule } from './modules/tags/tags.module';
 import { UsersModule } from './modules/users/users.module';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
 
 @Module({
   imports: [

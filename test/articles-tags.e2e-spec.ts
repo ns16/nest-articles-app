@@ -1,15 +1,16 @@
 import { INestApplication } from '@nestjs/common';
 import { matchers } from 'jest-json-schema';
 import * as request from 'supertest';
+
 import MigrationsManager from '../src/common/migration/migrations-manager';
 import SeedsManager from '../src/common/seed/seeds-manager';
+
 import { articleWithTagsSchema } from './_tools/schemas';
 import TestAppManager from './_tools/test-app-manager';
 
 expect.extend(matchers);
 
 describe('ArticlesTagsController (e2e)', () => {
-
   let app: INestApplication;
   let authorization: string;
 
@@ -26,9 +27,7 @@ describe('ArticlesTagsController (e2e)', () => {
         article_id: 1,
         tag_id: 1
       };
-      const res = await request(app.getHttpServer())
-        .post('/api/articles-tags')
-        .send(body);
+      const res = await request(app.getHttpServer()).post('/api/articles-tags').send(body);
       expect(res.status).toEqual(401);
       expect(res.body).toEqual({
         statusCode: 401,
@@ -110,9 +109,7 @@ describe('ArticlesTagsController (e2e)', () => {
         article_id: 1,
         tag_id: 1
       };
-      const res = await request(app.getHttpServer())
-        .delete('/api/articles-tags')
-        .send(body);
+      const res = await request(app.getHttpServer()).delete('/api/articles-tags').send(body);
       expect(res.status).toEqual(401);
       expect(res.body).toEqual({
         statusCode: 401,

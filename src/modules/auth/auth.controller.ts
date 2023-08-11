@@ -1,10 +1,12 @@
 import { Body, Controller, Get, HttpCode, HttpStatus, Post, Res } from '@nestjs/common';
 import { ApiBadRequestResponse, ApiBearerAuth, ApiOperation, ApiTags, ApiUnauthorizedResponse } from '@nestjs/swagger';
 import { Response } from 'express';
+
 import { Public, User } from '../../common/decorators';
 import { Admin } from '../../entities/admin.entity';
-import { LoginAdminDto } from './dto/login-admin.dto';
+
 import { AuthService } from './auth.service';
+import { LoginAdminDto } from './dto/login-admin.dto';
 
 @ApiTags('Auth')
 @Controller('auth')

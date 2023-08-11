@@ -4,13 +4,14 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { omit } from 'lodash';
 import { Repository } from 'typeorm';
+
 import { mockRepositoryFactory, MockType } from '../../common/test/helpers';
 import { Article } from '../../entities/article.entity';
 import { Tag } from '../../entities/tag.entity';
+
 import { ArticlesTagsService } from './articles-tags.service';
 
 describe('ArticlesTagsService', () => {
-
   let testingModule: TestingModule;
   let service: ArticlesTagsService;
   let mockArticleRepository: MockType<Repository<Article>>;
@@ -40,7 +41,8 @@ describe('ArticlesTagsService', () => {
       id: 1,
       user_id: 1,
       title: 'quas repudiandae aspernatur',
-      description: 'Saepe dolorum nostrum praesentium enim. Aut reprehenderit corrupti similique cumque porro reiciendis. Vero facilis modi nam optio tempore reprehenderit enim.',
+      description:
+        'Saepe dolorum nostrum praesentium enim. Aut reprehenderit corrupti similique cumque porro reiciendis. Vero facilis modi nam optio tempore reprehenderit enim.',
       status: 'published',
       created_at: '2023-07-01T00:00:00.000Z',
       updated_at: '2023-07-01T00:00:00.000Z',
@@ -79,36 +81,38 @@ describe('ArticlesTagsService', () => {
     test('should return article and its tags', async () => {
       const expectedResult = {
         ...omit(articleSource, ['tags']),
-        tags: [
-          ...articleSource.tags,
-          tagSource
-        ]
+        tags: [...articleSource.tags, tagSource]
       };
       mockArticleRepository.findOne.mockReturnValue({ ...articleSource });
       mockTagRepository.findOneBy.mockReturnValue({ ...tagSource });
       mockArticleRepository.save.mockReturnValue({ ...expectedResult });
       const result: Article = await service.create(body);
       expect(result).toEqual(expectedResult);
-      expect(mockArticleRepository.findOne).toHaveBeenCalledWith({ where: { id: articleSource.id }, relations: ['tags'] });
+      expect(mockArticleRepository.findOne).toHaveBeenCalledWith({
+        where: { id: articleSource.id },
+        relations: ['tags']
+      });
       expect(mockTagRepository.findOneBy).toHaveBeenCalledWith({ id: tagSource.id });
       expect(mockArticleRepository.save).toHaveBeenCalledWith(expectedResult);
     });
 
     test('should throw BadRequestException (article not found)', async () => {
       mockArticleRepository.findOne.mockReturnValue(null);
-      await expect(service.create(body))
-        .rejects
-        .toThrow(BadRequestException);
-      expect(mockArticleRepository.findOne).toHaveBeenCalledWith({ where: { id: articleSource.id }, relations: ['tags'] });
+      await expect(service.create(body)).rejects.toThrow(BadRequestException);
+      expect(mockArticleRepository.findOne).toHaveBeenCalledWith({
+        where: { id: articleSource.id },
+        relations: ['tags']
+      });
     });
 
     test('should throw BadRequestException (tag not found)', async () => {
       mockArticleRepository.findOne.mockReturnValue({ ...articleSource });
       mockTagRepository.findOneBy.mockReturnValue(null);
-      await expect(service.create(body))
-        .rejects
-        .toThrow(BadRequestException);
-      expect(mockArticleRepository.findOne).toHaveBeenCalledWith({ where: { id: articleSource.id }, relations: ['tags'] });
+      await expect(service.create(body)).rejects.toThrow(BadRequestException);
+      expect(mockArticleRepository.findOne).toHaveBeenCalledWith({
+        where: { id: articleSource.id },
+        relations: ['tags']
+      });
       expect(mockTagRepository.findOneBy).toHaveBeenCalledWith({ id: tagSource.id });
     });
   });
@@ -118,7 +122,8 @@ describe('ArticlesTagsService', () => {
       id: 1,
       user_id: 1,
       title: 'quas repudiandae aspernatur',
-      description: 'Saepe dolorum nostrum praesentium enim. Aut reprehenderit corrupti similique cumque porro reiciendis. Vero facilis modi nam optio tempore reprehenderit enim.',
+      description:
+        'Saepe dolorum nostrum praesentium enim. Aut reprehenderit corrupti similique cumque porro reiciendis. Vero facilis modi nam optio tempore reprehenderit enim.',
       status: 'published',
       created_at: '2023-07-01T00:00:00.000Z',
       updated_at: '2023-07-01T00:00:00.000Z',
@@ -163,35 +168,38 @@ describe('ArticlesTagsService', () => {
     test('should return article and its tags', async () => {
       const expectedResult = {
         ...omit(articleSource, ['tags']),
-        tags: [
-          ...articleSource.tags.filter(tag => tag.id !== tagSource.id),
-        ]
+        tags: [...articleSource.tags.filter(tag => tag.id !== tagSource.id)]
       };
       mockArticleRepository.findOne.mockReturnValue({ ...articleSource });
       mockTagRepository.findOneBy.mockReturnValue({ ...tagSource });
       mockArticleRepository.save.mockReturnValue({ ...expectedResult });
       const result: Article = await service.remove(body);
       expect(result).toEqual(expectedResult);
-      expect(mockArticleRepository.findOne).toHaveBeenCalledWith({ where: { id: articleSource.id }, relations: ['tags'] });
+      expect(mockArticleRepository.findOne).toHaveBeenCalledWith({
+        where: { id: articleSource.id },
+        relations: ['tags']
+      });
       expect(mockTagRepository.findOneBy).toHaveBeenCalledWith({ id: tagSource.id });
       expect(mockArticleRepository.save).toHaveBeenCalledWith(expectedResult);
     });
 
     test('should throw BadRequestException (article not found)', async () => {
       mockArticleRepository.findOne.mockReturnValue(null);
-      await expect(service.create(body))
-        .rejects
-        .toThrow(BadRequestException);
-      expect(mockArticleRepository.findOne).toHaveBeenCalledWith({ where: { id: articleSource.id }, relations: ['tags'] });
+      await expect(service.create(body)).rejects.toThrow(BadRequestException);
+      expect(mockArticleRepository.findOne).toHaveBeenCalledWith({
+        where: { id: articleSource.id },
+        relations: ['tags']
+      });
     });
 
     test('should throw BadRequestException (tag not found)', async () => {
       mockArticleRepository.findOne.mockReturnValue({ ...articleSource });
       mockTagRepository.findOneBy.mockReturnValue(null);
-      await expect(service.create(body))
-        .rejects
-        .toThrow(BadRequestException);
-      expect(mockArticleRepository.findOne).toHaveBeenCalledWith({ where: { id: articleSource.id }, relations: ['tags'] });
+      await expect(service.create(body)).rejects.toThrow(BadRequestException);
+      expect(mockArticleRepository.findOne).toHaveBeenCalledWith({
+        where: { id: articleSource.id },
+        relations: ['tags']
+      });
       expect(mockTagRepository.findOneBy).toHaveBeenCalledWith({ id: tagSource.id });
     });
   });

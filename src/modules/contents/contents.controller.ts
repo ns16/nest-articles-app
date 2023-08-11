@@ -22,14 +22,16 @@ import {
   ApiTags,
   ApiUnauthorizedResponse
 } from '@nestjs/swagger';
+
 import { ApiOkPaginatedResponse } from '../../common/decorators/api-ok-paginated-response';
 import { FindResponse } from '../../common/interfaces';
 import { Content } from '../../entities/content.entity';
+
+import { ContentsService } from './contents.service';
 import { CreateOrUpdateContentDto } from './dto/create-or-update-content.dto';
 import { FindAllContentsDto } from './dto/find-all-contents.dto';
 import { FindContentsDto } from './dto/find-contents.dto';
 import { FindOneContentDto } from './dto/find-one-content.dto';
-import { ContentsService } from './contents.service';
 
 @ApiTags('Contents')
 @Controller('contents')

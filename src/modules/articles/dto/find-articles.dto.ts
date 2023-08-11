@@ -1,6 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Type } from 'class-transformer';
 import { IsArray, IsIn, IsInt, IsOptional, IsPositive, IsString, ValidateNested } from 'class-validator';
+
 import { ArticleFilters } from './article-filters';
 import { ArticleSorts } from './article-sorts';
 
@@ -55,21 +56,13 @@ export class FindArticlesDto {
 
   @ApiProperty({
     name: 'includes[]',
-    enum: [
-      'user',
-      'content',
-      'tags'
-    ],
+    enum: ['user', 'content', 'tags'],
     type: ['string'],
     required: false
   })
   @IsOptional()
   @IsArray()
   @IsString({ each: true })
-  @IsIn([
-    'user',
-    'content',
-    'tags'
-  ], { each: true })
+  @IsIn(['user', 'content', 'tags'], { each: true })
   includes: string[];
 }

@@ -3,16 +3,15 @@ import { JwtService } from '@nestjs/jwt';
 import { InjectRepository } from '@nestjs/typeorm';
 import { compare } from 'bcrypt';
 import { Repository } from 'typeorm';
+
 import { Admin } from '../../entities/admin.entity';
+
 import { LoginAdminDto } from './dto/login-admin.dto';
 import { LoginResponse } from './interfaces/login-response';
 
 @Injectable()
 export class AuthService {
-  constructor(
-    @InjectRepository(Admin) private repository: Repository<Admin>,
-    private jwtService: JwtService
-  ) {}
+  constructor(@InjectRepository(Admin) private repository: Repository<Admin>, private jwtService: JwtService) {}
 
   async login(data: LoginAdminDto): Promise<LoginResponse> {
     const { username, password } = data;

@@ -5,6 +5,7 @@ import { JwtService } from '@nestjs/jwt';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Request } from 'express';
 import { Repository } from 'typeorm';
+
 import { IS_PUBLIC } from '../../common/decorators';
 import { Admin } from '../../entities/admin.entity';
 
@@ -29,7 +30,7 @@ export class AuthGuard implements CanActivate {
     }
     try {
       const payload = await this.jwtService.verifyAsync(token, { secret: this.configService.get('jwtKey') });
-      request['user'] = await this.repository.findOneBy({ id: payload.sub });
+      request['user'] = await this.repository.findOneBy({ id: payload.sub }); // eslint-disable-line @typescript-eslint/dot-notation
     } catch {
       throw new UnauthorizedException('Invalid token');
     }

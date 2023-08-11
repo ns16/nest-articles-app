@@ -17,6 +17,7 @@ import {
   Not,
   Repository
 } from 'typeorm';
+
 import { FindResponse, Pagination } from './interfaces';
 
 type BaseServiceType<T> = new (repository: Repository<any>) => T;
@@ -77,7 +78,7 @@ export function BaseService(entity: any): BaseServiceType<IBaseServiceHost> {
     }
 
     async create(data: any): Promise<any> {
-      return await this.validateAndSave(this.repository.create(), data);
+      return this.validateAndSave(this.repository.create(), data);
     }
 
     async update(id: number, data: any): Promise<any> {
@@ -85,7 +86,7 @@ export function BaseService(entity: any): BaseServiceType<IBaseServiceHost> {
       if (!model) {
         throw new NotFoundException();
       }
-      return await this.validateAndSave(model, data);
+      return this.validateAndSave(model, data);
     }
 
     async remove(id: number): Promise<void> {
@@ -117,10 +118,7 @@ export function BaseService(entity: any): BaseServiceType<IBaseServiceHost> {
     }
 
     private getFindManyOptions(query: any): FindManyOptions<any> {
-      const {
-        page = 1,
-        pageSize = 10
-      } = query;
+      const { page = 1, pageSize = 10 } = query;
       return {
         skip: (page - 1) * pageSize,
         take: pageSize,
@@ -129,11 +127,7 @@ export function BaseService(entity: any): BaseServiceType<IBaseServiceHost> {
     }
 
     private getFindOneOptions(query: any): FindOneOptions<any> {
-      const {
-        filters,
-        sorts,
-        includes = []
-      } = query;
+      const { filters, sorts, includes = [] } = query;
       return {
         where: this.getFindOptionsWhere(filters),
         relations: includes,
@@ -156,17 +150,17 @@ export function BaseService(entity: any): BaseServiceType<IBaseServiceHost> {
     }
 
     private static getFindOptionsOrder(sorts = { id: 'asc' }): FindOptionsOrder<any> {
-      return Object.entries(sorts).reduce((result, [field, value]) => ({
-        ...result,
-        [field]: value.toUpperCase()
-      }), {}) as FindOptionsOrder<any>;
+      return Object.entries(sorts).reduce(
+        (result, [field, value]) => ({
+          ...result,
+          [field]: value.toUpperCase()
+        }),
+        {}
+      ) as FindOptionsOrder<any>;
     }
 
     private static getPagination(query: any, count: number): Pagination {
-      const {
-        page = 1,
-        pageSize = 10
-      } = query;
+      const { page = 1, pageSize = 10 } = query;
       return {
         page: Number(page),
         pageCount: Math.ceil(count / pageSize),

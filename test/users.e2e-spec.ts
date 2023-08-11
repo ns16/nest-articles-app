@@ -1,8 +1,10 @@
 import { INestApplication } from '@nestjs/common';
 import { matchers } from 'jest-json-schema';
 import * as request from 'supertest';
+
 import MigrationsManager from '../src/common/migration/migrations-manager';
 import SeedsManager from '../src/common/seed/seeds-manager';
+
 import {
   userSchema,
   usersListSchema,
@@ -15,7 +17,6 @@ import TestAppManager from './_tools/test-app-manager';
 expect.extend(matchers);
 
 describe('UsersController (e2e)', () => {
-
   let app: INestApplication;
   let authorization: string;
 
@@ -28,9 +29,7 @@ describe('UsersController (e2e)', () => {
 
   describe('/api/users (GET)', () => {
     test('{"query":{}} - 401 error, invalid token', async () => {
-      const res = await request(app.getHttpServer())
-        .get('/api/users')
-        .query({});
+      const res = await request(app.getHttpServer()).get('/api/users').query({});
       expect(res.status).toEqual(401);
       expect(res.body).toEqual({
         statusCode: 401,
@@ -47,18 +46,13 @@ describe('UsersController (e2e)', () => {
       expect(res.status).toEqual(400);
       expect(res.body).toEqual({
         statusCode: 400,
-        message: [
-          'property foo should not exist'
-        ],
+        message: ['property foo should not exist'],
         error: 'Bad Request'
       });
     });
 
     test('{"query":{}} - success', async () => {
-      const res = await request(app.getHttpServer())
-        .get('/api/users')
-        .query({})
-        .set('Authorization', authorization);
+      const res = await request(app.getHttpServer()).get('/api/users').query({}).set('Authorization', authorization);
       expect(res.status).toEqual(200);
       expect(res.body.data).toMatchSchema(usersListSchema);
       expect(res.body.data).toHaveLength(10);
@@ -190,9 +184,7 @@ describe('UsersController (e2e)', () => {
         expect(res.status).toEqual(400);
         expect(res.body).toEqual({
           statusCode: 400,
-          message: [
-            'each value in includes must be one of the following values: articles'
-          ],
+          message: ['each value in includes must be one of the following values: articles'],
           error: 'Bad Request'
         });
       });
@@ -224,9 +216,7 @@ describe('UsersController (e2e)', () => {
         expect(res.status).toEqual(400);
         expect(res.body).toEqual({
           statusCode: 400,
-          message: [
-            'filters.id.property foo should not exist'
-          ],
+          message: ['filters.id.property foo should not exist'],
           error: 'Bad Request'
         });
       });
@@ -461,9 +451,7 @@ describe('UsersController (e2e)', () => {
         expect(res.status).toEqual(400);
         expect(res.body).toEqual({
           statusCode: 400,
-          message: [
-            'filters.username.property foo should not exist'
-          ],
+          message: ['filters.username.property foo should not exist'],
           error: 'Bad Request'
         });
       });
@@ -622,9 +610,7 @@ describe('UsersController (e2e)', () => {
 
   describe('/api/users/all (GET)', () => {
     test('{"query":{}} - 401 error, invalid token', async () => {
-      const res = await request(app.getHttpServer())
-        .get('/api/users/all')
-        .query({});
+      const res = await request(app.getHttpServer()).get('/api/users/all').query({});
       expect(res.status).toEqual(401);
       expect(res.body).toEqual({
         statusCode: 401,
@@ -641,9 +627,7 @@ describe('UsersController (e2e)', () => {
       expect(res.status).toEqual(400);
       expect(res.body).toEqual({
         statusCode: 400,
-        message: [
-          'property foo should not exist'
-        ],
+        message: ['property foo should not exist'],
         error: 'Bad Request'
       });
     });
@@ -713,9 +697,7 @@ describe('UsersController (e2e)', () => {
         expect(res.status).toEqual(400);
         expect(res.body).toEqual({
           statusCode: 400,
-          message: [
-            'each value in includes must be one of the following values: articles'
-          ],
+          message: ['each value in includes must be one of the following values: articles'],
           error: 'Bad Request'
         });
       });
@@ -740,9 +722,7 @@ describe('UsersController (e2e)', () => {
         expect(res.status).toEqual(400);
         expect(res.body).toEqual({
           statusCode: 400,
-          message: [
-            'filters.id.property foo should not exist'
-          ],
+          message: ['filters.id.property foo should not exist'],
           error: 'Bad Request'
         });
       });
@@ -893,9 +873,7 @@ describe('UsersController (e2e)', () => {
         expect(res.status).toEqual(400);
         expect(res.body).toEqual({
           statusCode: 400,
-          message: [
-            'filters.username.property foo should not exist'
-          ],
+          message: ['filters.username.property foo should not exist'],
           error: 'Bad Request'
         });
       });
@@ -998,9 +976,7 @@ describe('UsersController (e2e)', () => {
 
   describe('/api/users/:id (GET)', () => {
     test('{"params":{"id":1},"query":{}} - 401 error, invalid token', async () => {
-      const res = await request(app.getHttpServer())
-        .get('/api/users/1')
-        .query({});
+      const res = await request(app.getHttpServer()).get('/api/users/1').query({});
       expect(res.status).toEqual(401);
       expect(res.body).toEqual({
         statusCode: 401,
@@ -1010,10 +986,7 @@ describe('UsersController (e2e)', () => {
     });
 
     test('{"params":{"id":"a"},"query":{}} - 400 error, id param must be a number', async () => {
-      const res = await request(app.getHttpServer())
-        .get('/api/users/a')
-        .query({})
-        .set('Authorization', authorization);
+      const res = await request(app.getHttpServer()).get('/api/users/a').query({}).set('Authorization', authorization);
       expect(res.status).toEqual(400);
       expect(res.body).toEqual({
         statusCode: 400,
@@ -1042,18 +1015,13 @@ describe('UsersController (e2e)', () => {
       expect(res.status).toEqual(400);
       expect(res.body).toEqual({
         statusCode: 400,
-        message: [
-          'property foo should not exist'
-        ],
+        message: ['property foo should not exist'],
         error: 'Bad Request'
       });
     });
 
     test('{"params":{"id":1},"query":{}} - success', async () => {
-      const res = await request(app.getHttpServer())
-        .get('/api/users/1')
-        .query({})
-        .set('Authorization', authorization);
+      const res = await request(app.getHttpServer()).get('/api/users/1').query({}).set('Authorization', authorization);
       expect(res.status).toEqual(200);
       expect(res.body).toMatchSchema(userSchema);
       expect(res.body).toHaveProperty('id', 1);
@@ -1068,9 +1036,7 @@ describe('UsersController (e2e)', () => {
         expect(res.status).toEqual(400);
         expect(res.body).toEqual({
           statusCode: 400,
-          message: [
-            'each value in includes must be one of the following values: articles'
-          ],
+          message: ['each value in includes must be one of the following values: articles'],
           error: 'Bad Request'
         });
       });
@@ -1095,9 +1061,7 @@ describe('UsersController (e2e)', () => {
         password: 'Y9ECfszZ',
         email: 'Rosalind.Trantow35@gmail.com'
       };
-      const res = await request(app.getHttpServer())
-        .post('/api/users')
-        .send(body);
+      const res = await request(app.getHttpServer()).post('/api/users').send(body);
       expect(res.status).toEqual(401);
       expect(res.body).toEqual({
         statusCode: 401,
@@ -1113,16 +1077,11 @@ describe('UsersController (e2e)', () => {
         password: 'Y9ECfszZ',
         email: 'Rosalind.Trantow35@gmail.com'
       };
-      const res = await request(app.getHttpServer())
-        .post('/api/users')
-        .send(body)
-        .set('Authorization', authorization);
+      const res = await request(app.getHttpServer()).post('/api/users').send(body).set('Authorization', authorization);
       expect(res.status).toEqual(400);
       expect(res.body).toEqual({
         statusCode: 400,
-        message: [
-          'username field must be unique'
-        ],
+        message: ['username field must be unique'],
         error: 'Bad Request'
       });
     });
@@ -1134,16 +1093,11 @@ describe('UsersController (e2e)', () => {
         password: 'Y9ECfszZ',
         email: 'Rosalind.Trantow35+gmail.com'
       };
-      const res = await request(app.getHttpServer())
-        .post('/api/users')
-        .send(body)
-        .set('Authorization', authorization);
+      const res = await request(app.getHttpServer()).post('/api/users').send(body).set('Authorization', authorization);
       expect(res.status).toEqual(400);
       expect(res.body).toEqual({
         statusCode: 400,
-        message: [
-          'email must be an email'
-        ],
+        message: ['email must be an email'],
         error: 'Bad Request'
       });
     });
@@ -1155,16 +1109,11 @@ describe('UsersController (e2e)', () => {
         password: 'Y9ECfszZ',
         email: 'Sheldon_Bahringer6@yahoo.com'
       };
-      const res = await request(app.getHttpServer())
-        .post('/api/users')
-        .send(body)
-        .set('Authorization', authorization);
+      const res = await request(app.getHttpServer()).post('/api/users').send(body).set('Authorization', authorization);
       expect(res.status).toEqual(400);
       expect(res.body).toEqual({
         statusCode: 400,
-        message: [
-          'email field must be unique'
-        ],
+        message: ['email field must be unique'],
         error: 'Bad Request'
       });
     });
@@ -1176,10 +1125,7 @@ describe('UsersController (e2e)', () => {
         password: 'Y9ECfszZ',
         email: 'Rosalind.Trantow35@gmail.com'
       };
-      const res = await request(app.getHttpServer())
-        .post('/api/users')
-        .send(body)
-        .set('Authorization', authorization);
+      const res = await request(app.getHttpServer()).post('/api/users').send(body).set('Authorization', authorization);
       expect(res.status).toEqual(201);
       expect(res.body).toMatchSchema(userSchema);
       expect(res.body).toMatchObject({
@@ -1198,9 +1144,7 @@ describe('UsersController (e2e)', () => {
         username: 'Rosalind5',
         email: 'Rosalind.Trantow35@gmail.com'
       };
-      const res = await request(app.getHttpServer())
-        .put('/api/users/11')
-        .send(body);
+      const res = await request(app.getHttpServer()).put('/api/users/11').send(body);
       expect(res.status).toEqual(401);
       expect(res.body).toEqual({
         statusCode: 401,
@@ -1215,10 +1159,7 @@ describe('UsersController (e2e)', () => {
         username: 'Rosalind5',
         email: 'Rosalind.Trantow35@gmail.com'
       };
-      const res = await request(app.getHttpServer())
-        .put('/api/users/a')
-        .send(body)
-        .set('Authorization', authorization);
+      const res = await request(app.getHttpServer()).put('/api/users/a').send(body).set('Authorization', authorization);
       expect(res.status).toEqual(400);
       expect(res.body).toEqual({
         statusCode: 400,
@@ -1257,9 +1198,7 @@ describe('UsersController (e2e)', () => {
       expect(res.status).toEqual(400);
       expect(res.body).toEqual({
         statusCode: 400,
-        message: [
-          'username field must be unique'
-        ],
+        message: ['username field must be unique'],
         error: 'Bad Request'
       });
     });
@@ -1277,9 +1216,7 @@ describe('UsersController (e2e)', () => {
       expect(res.status).toEqual(400);
       expect(res.body).toEqual({
         statusCode: 400,
-        message: [
-          'email must be an email'
-        ],
+        message: ['email must be an email'],
         error: 'Bad Request'
       });
     });
@@ -1297,9 +1234,7 @@ describe('UsersController (e2e)', () => {
       expect(res.status).toEqual(400);
       expect(res.body).toEqual({
         statusCode: 400,
-        message: [
-          'email field must be unique'
-        ],
+        message: ['email field must be unique'],
         error: 'Bad Request'
       });
     });
@@ -1337,9 +1272,7 @@ describe('UsersController (e2e)', () => {
     });
 
     test('{"params":{"id":"a"}} - 400 error, id param must be a number', async () => {
-      const res = await request(app.getHttpServer())
-        .delete('/api/users/a')
-        .set('Authorization', authorization);
+      const res = await request(app.getHttpServer()).delete('/api/users/a').set('Authorization', authorization);
       expect(res.status).toEqual(400);
       expect(res.body).toEqual({
         statusCode: 400,
@@ -1349,9 +1282,7 @@ describe('UsersController (e2e)', () => {
     });
 
     test('{"params":{"id":100}} - 404 error, entity not found', async () => {
-      const res = await request(app.getHttpServer())
-        .delete('/api/users/100')
-        .set('Authorization', authorization);
+      const res = await request(app.getHttpServer()).delete('/api/users/100').set('Authorization', authorization);
       expect(res.status).toEqual(404);
       expect(res.body).toEqual({
         statusCode: 404,
@@ -1360,9 +1291,7 @@ describe('UsersController (e2e)', () => {
     });
 
     test('{"params":{"id":11}} - success', async () => {
-      const res = await request(app.getHttpServer())
-        .delete('/api/users/11')
-        .set('Authorization', authorization);
+      const res = await request(app.getHttpServer()).delete('/api/users/11').set('Authorization', authorization);
       expect(res.status).toEqual(204);
       expect(res.body).toEqual({});
     });

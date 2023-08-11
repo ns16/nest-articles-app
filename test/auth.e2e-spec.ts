@@ -1,15 +1,16 @@
 import { INestApplication } from '@nestjs/common';
 import { matchers } from 'jest-json-schema';
 import * as request from 'supertest';
+
 import MigrationsManager from '../src/common/migration/migrations-manager';
 import SeedsManager from '../src/common/seed/seeds-manager';
+
 import { adminSchema } from './_tools/schemas';
 import TestAppManager from './_tools/test-app-manager';
 
 expect.extend(matchers);
 
 describe('AuthController (e2e)', () => {
-
   let app: INestApplication;
   let authorization: string;
 
@@ -26,9 +27,7 @@ describe('AuthController (e2e)', () => {
         username: 'ns17',
         password: '123456'
       };
-      const res = await request(app.getHttpServer())
-        .post('/api/auth/login')
-        .send(body);
+      const res = await request(app.getHttpServer()).post('/api/auth/login').send(body);
       expect(res.status).toEqual(401);
       expect(res.body).toEqual({
         statusCode: 401,
@@ -42,9 +41,7 @@ describe('AuthController (e2e)', () => {
         username: 'ns16',
         password: '123457'
       };
-      const res = await request(app.getHttpServer())
-        .post('/api/auth/login')
-        .send(body);
+      const res = await request(app.getHttpServer()).post('/api/auth/login').send(body);
       expect(res.status).toEqual(401);
       expect(res.body).toEqual({
         statusCode: 401,
@@ -58,9 +55,7 @@ describe('AuthController (e2e)', () => {
         username: 'ns16',
         password: '123456'
       };
-      const res = await request(app.getHttpServer())
-        .post('/api/auth/login')
-        .send(body);
+      const res = await request(app.getHttpServer()).post('/api/auth/login').send(body);
       expect(res.status).toEqual(200);
       expect(res.body).toMatchSchema(adminSchema);
       expect(res.body).toMatchObject({
@@ -82,9 +77,7 @@ describe('AuthController (e2e)', () => {
     });
 
     test('success', async () => {
-      const res = await request(app.getHttpServer())
-        .get('/api/auth/me')
-        .set('Authorization', authorization);
+      const res = await request(app.getHttpServer()).get('/api/auth/me').set('Authorization', authorization);
       expect(res.status).toEqual(200);
       expect(res.body).toMatchSchema(adminSchema);
       expect(res.body).toMatchObject({

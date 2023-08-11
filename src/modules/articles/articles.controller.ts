@@ -22,14 +22,16 @@ import {
   ApiTags,
   ApiUnauthorizedResponse
 } from '@nestjs/swagger';
+
 import { ApiOkPaginatedResponse } from '../../common/decorators/api-ok-paginated-response';
 import { FindResponse } from '../../common/interfaces';
 import { Article } from '../../entities/article.entity';
+
+import { ArticlesService } from './articles.service';
 import { CreateOrUpdateArticleDto } from './dto/create-or-update-article.dto';
 import { FindAllArticlesDto } from './dto/find-all-articles.dto';
 import { FindArticlesDto } from './dto/find-articles.dto';
 import { FindOneArticleDto } from './dto/find-one-article.dto';
-import { ArticlesService } from './articles.service';
 
 @ApiTags('Articles')
 @Controller('articles')

@@ -1,5 +1,6 @@
 import { hashSync } from 'bcrypt';
 import { EntitySubscriberInterface, EventSubscriber, InsertEvent, UpdateEvent } from 'typeorm';
+
 import { Admin } from '../entities/admin.entity';
 
 @EventSubscriber()

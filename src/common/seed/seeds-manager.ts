@@ -1,7 +1,6 @@
 import AppDataSource from '../../data-source';
 
 export default class SeedsManager {
-
   static seeds = [
     { entity: 'users', data: [], listeners: true },
     { entity: 'articles', data: [], listeners: false },
@@ -15,7 +14,9 @@ export default class SeedsManager {
     const environment = process.env.NODE_ENV ?? 'development';
     for (const seed of SeedsManager.seeds) {
       try {
-        const module = await import(process.cwd() + '/src/seeds/' + environment + '/' + seed.entity.replace('_', '-') + '.seed');
+        const module = await import(
+          `${process.cwd()}/src/seeds/${environment}/${seed.entity.replace('_', '-')}.seed`
+        );
         seed.data.push(...module.default);
       } catch (error) {
         // Ignore cases when the file is not found
@@ -29,7 +30,7 @@ export default class SeedsManager {
     if (!AppDataSource.isInitialized) {
       await AppDataSource.initialize();
     }
-    if (process.env.NODE_ENV !== 'test') console.log('Doing seeds...');
+    if (process.env.NODE_ENV !== 'test') console.log('Doing seeds...'); // eslint-disable-line no-console
     for (const seed of seeds) {
       await AppDataSource.createQueryBuilder().delete().from(seed.entity).execute();
       if (seed.data.length) {
@@ -39,11 +40,13 @@ export default class SeedsManager {
           .values(seed.data)
           .callListeners(Boolean(seed.listeners))
           .execute()
-          .then(() => process.env.NODE_ENV !== 'test' ? console.log(`Added ${seed.data.length} rows in ${seed.entity} table`) : undefined);
+          .then(() => (process.env.NODE_ENV !== 'test'
+            ? console.log(`Added ${seed.data.length} rows in ${seed.entity} table`) // eslint-disable-line no-console
+            : undefined));
       }
       await AppDataSource.query(`ALTER TABLE ${seed.entity} AUTO_INCREMENT = ${seed.data.length + 1}`);
     }
-    if (process.env.NODE_ENV !== 'test') console.log('Seeds are done!');
+    if (process.env.NODE_ENV !== 'test') console.log('Seeds are done!'); // eslint-disable-line no-console
     await AppDataSource.destroy();
   }
 
@@ -51,16 +54,18 @@ export default class SeedsManager {
     if (!AppDataSource.isInitialized) {
       await AppDataSource.initialize();
     }
-    if (process.env.NODE_ENV !== 'test') console.log('Reverting seeds...');
+    if (process.env.NODE_ENV !== 'test') console.log('Reverting seeds...'); // eslint-disable-line no-console
     for (const seed of [...SeedsManager.seeds].reverse()) {
       await AppDataSource.createQueryBuilder()
         .delete()
         .from(seed.entity)
         .execute()
-        .then(() => process.env.NODE_ENV !== 'test' ? console.log(`Deleted all rows from ${seed.entity} table`) : undefined);
+        .then(() => (process.env.NODE_ENV !== 'test'
+          ? console.log(`Deleted all rows from ${seed.entity} table`) // eslint-disable-line no-console
+          : undefined));
       await AppDataSource.query(`ALTER TABLE ${seed.entity} AUTO_INCREMENT = 1`);
     }
-    if (process.env.NODE_ENV !== 'test') console.log('Seeds are reverted!');
+    if (process.env.NODE_ENV !== 'test') console.log('Seeds are reverted!'); // eslint-disable-line no-console
     await AppDataSource.destroy();
   }
 }
